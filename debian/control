@@ -1,0 +1,28 @@
+Source: unity-voice
+Section: gnome
+Priority: optional
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: Pete Woods <pete.woods@canonical.com>
+Build-Depends: cmake,
+               debhelper (>= 9),
+               gettext,
+               google-mock (>= 1.6.0+svn437),
+               libqtdbusmock1-dev,
+               libqtdbustest1-dev,
+               pkg-config,
+               python3-dbusmock,
+               qtbase5-dev,
+               valgrind,
+Standards-Version: 3.9.4
+Homepage: https://launchpad.net/unity-voice
+# If you aren't a member of ~unity-team but need to upload packaging changes,
+# just go ahead. ~unity-team will notice and sync up the code again.
+Vcs-Bzr: https://code.launchpad.net/~unity-team/unity-voice/trunk
+
+Package: unity-voice
+Architecture: any
+Depends: ${misc:Depends},
+         ${shlibs:Depends},
+Description: Voice recognition service for unity
+ This projects projects a DBus service that performs voice
+ recognition.

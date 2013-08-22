@@ -1,0 +1,5 @@
+description "Service to perform voice recognition"
+
+respawn
+
+exec @CMAKE_INSTALL_FULL_LIBEXECDIR@/unity-voice

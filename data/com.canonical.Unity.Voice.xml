@@ -1,0 +1,21 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+	<interface name="com.canonical.Unity.Voice">
+	
+		<method name="listen">
+			<annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="QListStringList"/>
+			<arg name="commands" type="aas" direction="in"/>
+			<arg type="s" direction="out"/>
+		</method>
+		
+		<signal name="Loading">
+		</signal>
+
+		<signal name="Listening">
+		</signal>
+
+		<signal name="HeardSomething">
+		</signal>
+		
+	</interface>
+</node>
