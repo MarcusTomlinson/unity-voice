@@ -8,7 +8,7 @@
 #ifndef ADAPTORINCLUDE_H_
 #define ADAPTORINCLUDE_H_
 
-#include <DBusTypes.h>
+#include <libunityvoice/DBusTypes.h>
 #include <VoiceService.h>
 
 #endif /* ADAPTORINCLUDE_H_ */

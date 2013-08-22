@@ -8,6 +8,8 @@ set(DICT_PATH "/usr/share/sphinx-voxforge-en/lm/voxforge_en_sphinx.cd_cont_3000/
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" "${CMAKE_MODULE_PATH}")
 
+option(ENABLE_TESTS "Determine if tests will be run" ON)
+
 find_package(PkgConfig REQUIRED)
 
 find_package(Qt5Core REQUIRED)
@@ -67,10 +69,14 @@ configure_file(
 add_subdirectory("src")
 add_subdirectory("data")
 
-enable_testing()
+if(${ENABLE_TESTS})
+	enable_testing()
+	ADD_CUSTOM_TARGET(
+		check
+		${CMAKE_CTEST_COMMAND} --force-new-ctest-process --output-on-failure
+	)
+endif()
+
 add_subdirectory(tests)
 
-ADD_CUSTOM_TARGET(
-	check
-	${CMAKE_CTEST_COMMAND} --force-new-ctest-process --output-on-failure
-)
+

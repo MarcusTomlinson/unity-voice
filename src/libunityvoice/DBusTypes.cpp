@@ -16,30 +16,14 @@
  * Author: Pete Woods <pete.woods@canonical.com>
  */
 
-#include <config.h>
-
-#include <QCoreApplication>
-#include <gtest/gtest.h>
-
-#include <libqtdbusmock/DBusMock.h>
 #include <libunityvoice/DBusTypes.h>
 
-using namespace QtDBusMock;
-using namespace LibUnityVoice;
+namespace LibUnityVoice {
 
-int main(int argc, char **argv) {
-	qputenv("LANG", "C.UTF-8");
-	unsetenv("LC_ALL");
+void DBusTypes::registerMetaTypes() {
+	qRegisterMetaType<QListStringList>("QListStringList");
 
-	setlocale(LC_ALL, "");
-	bindtextdomain(GETTEXT_PACKAGE, LOCALE_DIR);
-	textdomain(GETTEXT_PACKAGE);
+	qDBusRegisterMetaType<QListStringList>();
+}
 
-	QCoreApplication application(argc, argv);
-
-	DBusMock::registerMetaTypes();
-	DBusTypes::registerMetaTypes();
-
-	::testing::InitGoogleTest(&argc, argv);
-	return RUN_ALL_TESTS();
 }

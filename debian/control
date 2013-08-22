@@ -7,11 +7,16 @@ Build-Depends: cmake,
                debhelper (>= 9),
                gettext,
                google-mock (>= 1.6.0+svn437),
+               libpocketsphinx-dev (>= 0.8),
                libqtdbusmock1-dev,
                libqtdbustest1-dev,
+               libsphinxbase-dev (>= 0.8),
                pkg-config,
+               pulseaudio,
                python3-dbusmock,
                qtbase5-dev,
+               sphinx-voxforge-hmm-en,
+               sphinx-voxforge-lm-en,
                valgrind,
 Standards-Version: 3.9.4
 Homepage: https://launchpad.net/unity-voice
@@ -21,7 +26,9 @@ Vcs-Bzr: https://code.launchpad.net/~unity-team/unity-voice/trunk
 
 Package: unity-voice
 Architecture: any
-Depends: ${misc:Depends},
+Depends: sphinx-voxforge-hmm-en,
+         sphinx-voxforge-lm-en,
+         ${misc:Depends},
          ${shlibs:Depends},
 Description: Voice recognition service for unity
  This projects projects a DBus service that performs voice

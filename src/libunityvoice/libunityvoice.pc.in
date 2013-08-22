@@ -1,0 +1,10 @@
+libdir=@CMAKE_INSTALL_FULL_LIBDIR@
+includedir=@CMAKE_INSTALL_FULL_INCLUDEDIR@
+
+Cflags: -I${includedir}/libunityvoice-@API_VERSION@
+Requires: Qt5Core Qt5DBus
+Libs: -L${libdir} -lunityvoice
+
+Name: libusermetricsinput
+Description: Client library for the Unity voice service
+Version: @ABI_VERSION@

@@ -16,7 +16,7 @@
  * Author: Pete Woods <pete.woods@canonical.com>
  */
 
-#include <VoiceInterface.h>
+#include <libunityvoice/UnityVoice.h>
 
 #include <pulse/pulseaudio.h>
 #include <libqtdbustest/QProcessDBusService.h>
@@ -28,7 +28,7 @@
 using namespace std;
 using namespace testing;
 using namespace QtDBusTest;
-using namespace com::canonical::Unity;
+using namespace LibUnityVoice;
 
 namespace {
 
@@ -258,11 +258,12 @@ protected:
 		deviceFile.close();
 	}
 
-	void testSound(Voice &voice, const QList<QStringList> &commands,
-			const QString &soundName, const QString &expected) {
+	void testSound(QSharedPointer<ComCanonicalUnityVoiceInterface> voice,
+			const QList<QStringList> &commands, const QString &soundName,
+			const QString &expected) {
 
 		QtConcurrent::run(TestSphinx::playSound, soundName, devicePath);
-		QString result(voice.listen(commands));
+		QString result(voice->listen(commands));
 		EXPECT_EQ(expected.toStdString(), result.toStdString());
 	}
 
@@ -287,8 +288,8 @@ TEST_F(TestSphinx, Listens) {
 	commands << (QStringList() << "open" << "terminal");
 	commands << (QStringList() << "system" << "settings");
 
-	Voice voice("com.canonical.Unity.Voice", "/com/canonical/Unity/Voice",
-			dbusTestRunner.sessionConnection());
+	QSharedPointer<ComCanonicalUnityVoiceInterface> voice(
+			UnityVoice::getInstance());
 
 	testSound(voice, commands, "auto-adjust", "auto adjust");
 	testSound(voice, commands, "color-balance", "color balance");

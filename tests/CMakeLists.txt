@@ -16,24 +16,12 @@ add_definitions(-DPRONOUCE_DICT_HTK="${CMAKE_CURRENT_SOURCE_DIR}/data/dicts/htk.
 add_definitions(-DPRONOUCE_DICT_LOWERCASE="${CMAKE_CURRENT_SOURCE_DIR}/data/dicts/lowercase.dic")
 add_definitions(-DPRONOUCE_DICT_SEMICOLON="${CMAKE_CURRENT_SOURCE_DIR}/data/dicts/semicolon.dic")
 
-add_definitions(-DUNITY_VOICE_SERVICE_BIN="${CMAKE_BINARY_DIR}/src/unity-voice-service")
+add_definitions(-DUNITY_VOICE_SERVICE_BIN="${CMAKE_BINARY_DIR}/src/service/unity-voice-service")
 
 set(
 	UNIT_TESTS_SRC
 	TestSphinx.cpp
 	main.cpp
-)
-
-set_source_files_properties(
-	"${DATA_DIR}/com.canonical.Unity.Voice.xml"
-	PROPERTIES
-	INCLUDE "DBusTypes.h"
-)
-
-qt5_add_dbus_interface(
-	UNIT_TESTS_SRC
-	"${DATA_DIR}/com.canonical.Unity.Voice.xml"
-	VoiceInterface
 )
 
 add_executable(
@@ -50,6 +38,7 @@ qt5_use_modules(
 
 target_link_libraries(
 	unit-tests
+	unityvoice
 	${POCKETSPHINX_LIBRARIES}
 	${QTDBUSMOCK_LIBRARIES}
 	${QTDBUSTEST_LIBRARIES}

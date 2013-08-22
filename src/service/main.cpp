@@ -19,11 +19,13 @@
 #include <config.h>
 #include <VoiceService.h>
 #include <Localisation.h>
-#include <DBusTypes.h>
+#include <libunityvoice/DBusTypes.h>
 
 #include <QCoreApplication>
 #include <QDBusConnection>
 #include <csignal>
+
+using namespace LibUnityVoice;
 
 static void exitQt(int sig) {
 	Q_UNUSED(sig);

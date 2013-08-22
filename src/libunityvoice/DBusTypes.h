@@ -25,13 +25,14 @@
 typedef QList<QStringList> QListStringList;
 Q_DECLARE_METATYPE(QListStringList)
 
-class DBusTypes {
-public:
-	static void registerMetaTypes() {
-		qRegisterMetaType<QListStringList>("QListStringList");
+namespace LibUnityVoice {
 
-		qDBusRegisterMetaType<QListStringList>();
-	}
+class Q_DECL_EXPORT DBusTypes {
+public:
+	Q_DECL_EXPORT
+	static void registerMetaTypes();
 };
+
+}
 
 #endif /* DBUSTYPES_H_ */
