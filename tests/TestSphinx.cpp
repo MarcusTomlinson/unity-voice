@@ -78,10 +78,8 @@ protected:
 		pa_operation *o;
 
 		if (!(o = pa_context_drain(context, context_drain_complete, NULL))) {
-			qDebug() << "DRAIN: disconnecting";
 			pa_context_disconnect(context);
 		} else {
-			qDebug() << "DRAIN: unreffing";
 			pa_operation_unref(o);
 		}
 	}
@@ -92,7 +90,6 @@ protected:
 		}
 
 		TestSphinx *self = static_cast<TestSphinx *>(userdata);
-		qDebug() << "index_callback: loaded module with index" << idx;
 		self->module_index = idx;
 
 		drain(c);
@@ -106,8 +103,6 @@ protected:
 
 	void successCallback(pa_context *c, int success) {
 		operation_success = success;
-		qDebug() << "index_callback_unload: unloaded module with index"
-				<< module_index;
 		module_index = PA_INVALID_INDEX;
 
 		drain(c);
@@ -128,25 +123,23 @@ protected:
 		case PA_CONTEXT_CONNECTING:
 		case PA_CONTEXT_AUTHORIZING:
 		case PA_CONTEXT_SETTING_NAME:
-			qDebug() << "PA_CONTEXT_CONNECTING";
 			break;
 
 		case PA_CONTEXT_READY:
 			arguments = formatString.arg(deviceName, devicePath);
-			qDebug() << "Loading module with arguments=" << arguments;
 			pa_operation_unref(
 					pa_context_load_module(context, "module-pipe-source",
 							arguments.toUtf8().data(), index_callback, this));
 			break;
 
 		case PA_CONTEXT_TERMINATED:
-			qDebug("PA_CONTEXT_TERMINATED");
 			quit_pulse(0);
 			break;
 
-			case PA_CONTEXT_FAILED:
-			default:
-			qWarning() << "PA_CONTEXT_FAILED: " << pa_strerror(pa_context_errno(context));
+		case PA_CONTEXT_FAILED:
+		default:
+			qWarning() << "PA_CONTEXT_FAILED: "
+					<< pa_strerror(pa_context_errno(context));
 			quit_pulse(1);
 			break;
 		}
@@ -160,28 +153,25 @@ protected:
 
 	void contextStateCallbackUnloadModule(pa_context *context) {
 		switch (pa_context_get_state(context)) {
-			case PA_CONTEXT_CONNECTING:
-			case PA_CONTEXT_AUTHORIZING:
-			case PA_CONTEXT_SETTING_NAME:
-			qDebug() << "PA_CONTEXT_CONNECTING";
+		case PA_CONTEXT_CONNECTING:
+		case PA_CONTEXT_AUTHORIZING:
+		case PA_CONTEXT_SETTING_NAME:
 			break;
 
-			case PA_CONTEXT_READY:
-			qDebug() << "unload module " << module_index;
+		case PA_CONTEXT_READY:
 			pa_operation_unref(
 					pa_context_unload_module(context, module_index,
 							success_callback, this));
 			break;
 
-			case PA_CONTEXT_TERMINATED:
-			qDebug() << "PA_CONTEXT_TERMINATED";
+		case PA_CONTEXT_TERMINATED:
 			quit_pulse(0);
 			break;
 
-			case PA_CONTEXT_FAILED:
-			default:
-			qWarning() << "PA_CONTEXT_FAILED:"<<
-			pa_strerror(pa_context_errno(context));
+		case PA_CONTEXT_FAILED:
+		default:
+			qWarning() << "PA_CONTEXT_FAILED:"
+					<< pa_strerror(pa_context_errno(context));
 			quit_pulse(1);
 			break;
 		}
@@ -199,7 +189,8 @@ protected:
 		pa_context_set_state_callback(context,
 				context_state_callback_unload_module, this);
 
-		ASSERT_GE(pa_context_connect (context, NULL, PA_CONTEXT_NOFLAGS, NULL ), 0);
+		ASSERT_GE(pa_context_connect (context, NULL, PA_CONTEXT_NOFLAGS, NULL ),
+				0);
 
 		int ret = 0;
 		ASSERT_GE(pa_mainloop_run(mainloop, &ret), 0);
@@ -228,7 +219,8 @@ protected:
 		pa_context_set_state_callback(context,
 				context_state_callback_load_module, this);
 
-		ASSERT_GE(pa_context_connect (context, NULL, PA_CONTEXT_NOFLAGS, NULL ), 0);
+		ASSERT_GE(pa_context_connect (context, NULL, PA_CONTEXT_NOFLAGS, NULL ),
+				0);
 
 		int ret = 0;
 		ASSERT_GE(pa_mainloop_run(mainloop, &ret), 0);
