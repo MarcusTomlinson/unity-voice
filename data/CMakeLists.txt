@@ -4,13 +4,13 @@
 ###########################
 
 configure_file (
-	unity-voice.conf.in
-	unity-voice.conf
+	unity-voice-service.conf.in
+	unity-voice-service.conf
 	@ONLY
 )
 
 install (
-	FILES ${CMAKE_CURRENT_BINARY_DIR}/unity-voice.conf
+	FILES ${CMAKE_CURRENT_BINARY_DIR}/unity-voice-service.conf
 	DESTINATION ${CMAKE_INSTALL_PREFIX}/share/upstart/sessions
 )
 
