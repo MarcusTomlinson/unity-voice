@@ -23,6 +23,7 @@
 #include <libqtdbustest/QProcessDBusService.h>
 #include <libqtdbustest/DBusTestRunner.h>
 #include <QDebug>
+#include <QSignalSpy>
 #include <QtConcurrentRun>
 #include <gtest/gtest.h>
 
@@ -59,13 +60,16 @@ protected:
 								UNITY_VOICE_SERVICE_BIN,
 								QStringList() << deviceName)));
 		dbusTestRunner.startServices();
+
+		voice.reset(UnityVoice::getInstance());
+
 	}
 
 	virtual ~TestVoiceService() {
 		unloadPipeModule();
 	}
 
-	void quit_pulse(int ret) {
+	void quitPulse(int ret) {
 		ASSERT_TRUE(api != 0);
 		api->quit(api, ret);
 	}
@@ -138,14 +142,14 @@ protected:
 			break;
 
 		case PA_CONTEXT_TERMINATED:
-			quit_pulse(0);
+			quitPulse(0);
 			break;
 
 		case PA_CONTEXT_FAILED:
 		default:
 			qWarning() << "PA_CONTEXT_FAILED: "
 					<< pa_strerror(pa_context_errno(context));
-			quit_pulse(1);
+			quitPulse(1);
 			FAIL();
 			break;
 		}
@@ -171,14 +175,14 @@ protected:
 			break;
 
 		case PA_CONTEXT_TERMINATED:
-			quit_pulse(0);
+			quitPulse(0);
 			break;
 
 		case PA_CONTEXT_FAILED:
 		default:
 			qWarning() << "PA_CONTEXT_FAILED:"
 					<< pa_strerror(pa_context_errno(context));
-			quit_pulse(1);
+			quitPulse(1);
 			break;
 		}
 	}
@@ -247,9 +251,6 @@ protected:
 	}
 
 	static void playSound(const QString &soundName, const QString &devicePath) {
-		// FIXME wait until voice service is listening
-		QThread::msleep(300);
-
 		QDir soundsDir(SOUNDS_DIR);
 
 		QFile soundFile(soundsDir.filePath(soundName).append(".raw"));
@@ -272,8 +273,26 @@ protected:
 			const QList<QStringList> &commands, const QString &soundName,
 			const QString &expected) {
 
+		QSignalSpy loadingSpy(voice.data(), SIGNAL(Loading()));
+		QSignalSpy listeningSpy(voice.data(), SIGNAL(Listening()));
+		QSignalSpy heardSomethingSpy(voice.data(), SIGNAL(HeardSomething()));
+
+		// Start listening
+		QDBusPendingReply<QString> reply(voice->listen(commands));
+
+		// Waiting until the service is listening
+		listeningSpy.wait();
+		ASSERT_FALSE(listeningSpy.empty());
+		ASSERT_FALSE(loadingSpy.empty());
+
+		// Only play the sounds when we know the service is listening
 		QtConcurrent::run(TestVoiceService::playSound, soundName, devicePath);
-		QString result(voice->listen(commands));
+
+		// We should be able to hear something before the result is available
+		heardSomethingSpy.wait();
+		ASSERT_FALSE(heardSomethingSpy.empty());
+
+		QString result(reply);
 		EXPECT_EQ(expected.toStdString(), result.toStdString());
 	}
 
@@ -287,19 +306,17 @@ protected:
 
 	QString deviceName;
 	QString devicePath;
+
+	QSharedPointer<ComCanonicalUnityVoiceInterface> voice;
 };
 
 TEST_F(TestVoiceService, Listens) {
 	QList<QStringList> commands;
-
 	commands << (QStringList() << "auto" << "adjust");
 	commands << (QStringList() << "color" << "balance");
 	commands << (QStringList() << "open" << "tab");
 	commands << (QStringList() << "open" << "terminal");
 	commands << (QStringList() << "system" << "settings");
-
-	QSharedPointer<ComCanonicalUnityVoiceInterface> voice(
-			UnityVoice::getInstance());
 
 	testSound(voice, commands, "auto-adjust", "auto adjust");
 	testSound(voice, commands, "color-balance", "color balance");

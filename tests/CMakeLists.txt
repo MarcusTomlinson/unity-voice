@@ -27,6 +27,7 @@ qt5_use_modules(
 	unit-tests
 	Core
 	DBus
+	Test
 )
 
 target_link_libraries(
