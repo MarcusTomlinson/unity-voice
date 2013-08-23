@@ -48,6 +48,9 @@ include_directories(${SOURCE_BINARY_DIR})
 include(GNUInstallDirs)
 include(Coverage)
 
+include(GenerateExportHeader)
+add_compiler_export_flags()
+
 # Workaround for libexecdir on debian
 if (EXISTS "/etc/debian_version") 
   set(CMAKE_INSTALL_LIBEXECDIR ${CMAKE_INSTALL_LIBDIR})

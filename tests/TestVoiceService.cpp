@@ -33,18 +33,22 @@ using namespace LibUnityVoice;
 
 namespace {
 
-class TestSphinx: public Test {
+class TestVoiceService: public Test {
 protected:
-	TestSphinx() :
+	TestVoiceService() :
 			mainloop(0), api(0), context(0), operation_success(false), module_index(
-					PA_INVALID_INDEX ), temporaryFile(
-					QDir(QDir::tempPath()).filePath("test-voice-XXXXXX.source")) {
+					PA_INVALID_INDEX ) {
 
-		temporaryFile.setAutoRemove(true);
-		temporaryFile.open();
-		temporaryFile.close();
-		devicePath = temporaryFile.fileName();
-		deviceName = QFileInfo(temporaryFile).baseName();
+		{
+			QTemporaryFile temporaryFile(
+					QDir(QDir::tempPath()).filePath(
+							"test-voice-XXXXXX.source"));
+			temporaryFile.setAutoRemove(true);
+			temporaryFile.open();
+			temporaryFile.close();
+			devicePath = temporaryFile.fileName();
+			deviceName = QFileInfo(temporaryFile).baseName();
+		}
 
 		loadPipeModule();
 
@@ -57,7 +61,7 @@ protected:
 		dbusTestRunner.startServices();
 	}
 
-	virtual ~TestSphinx() {
+	virtual ~TestVoiceService() {
 		unloadPipeModule();
 	}
 
@@ -82,20 +86,24 @@ protected:
 	}
 
 	static void index_callback(pa_context *c, uint32_t idx, void *userdata) {
+		TestVoiceService *self = static_cast<TestVoiceService *>(userdata);
+		self->indexCallback(c, idx);
+	}
+
+	void indexCallback(pa_context *c, uint32_t idx) {
 		if (idx == PA_INVALID_INDEX ) {
 			qWarning() << "Pulse error: " << pa_strerror(pa_context_errno(c));
+			FAIL();
 		}
 
-		TestSphinx *self = static_cast<TestSphinx *>(userdata);
-		self->module_index = idx;
+		module_index = idx;
 
 		drain(c);
 	}
 
 	static void success_callback(pa_context *c, int success, void *userdata) {
-		TestSphinx *self = static_cast<TestSphinx *>(userdata);
+		TestVoiceService *self = static_cast<TestVoiceService *>(userdata);
 		self->successCallback(c, success);
-
 	}
 
 	void successCallback(pa_context *c, int success) {
@@ -107,7 +115,7 @@ protected:
 
 	static void context_state_callback_load_module(pa_context *context,
 			void *userdata) {
-		TestSphinx *self = static_cast<TestSphinx *>(userdata);
+		TestVoiceService *self = static_cast<TestVoiceService *>(userdata);
 		self->contextStateCallbackLoadModule(context);
 	}
 
@@ -138,13 +146,14 @@ protected:
 			qWarning() << "PA_CONTEXT_FAILED: "
 					<< pa_strerror(pa_context_errno(context));
 			quit_pulse(1);
+			FAIL();
 			break;
 		}
 	}
 
 	static void context_state_callback_unload_module(pa_context *context,
 			void *userdata) {
-		TestSphinx *self = static_cast<TestSphinx *>(userdata);
+		TestVoiceService *self = static_cast<TestVoiceService *>(userdata);
 		self->contextStateCallbackUnloadModule(context);
 	}
 
@@ -175,6 +184,10 @@ protected:
 	}
 
 	void unloadPipeModule() {
+		if (module_index == PA_INVALID_INDEX ) {
+			return;
+		}
+
 		mainloop = pa_mainloop_new();
 		ASSERT_TRUE(mainloop != 0);
 
@@ -259,7 +272,7 @@ protected:
 			const QList<QStringList> &commands, const QString &soundName,
 			const QString &expected) {
 
-		QtConcurrent::run(TestSphinx::playSound, soundName, devicePath);
+		QtConcurrent::run(TestVoiceService::playSound, soundName, devicePath);
 		QString result(voice->listen(commands));
 		EXPECT_EQ(expected.toStdString(), result.toStdString());
 	}
@@ -274,11 +287,9 @@ protected:
 
 	QString deviceName;
 	QString devicePath;
-
-	QTemporaryFile temporaryFile;
 };
 
-TEST_F(TestSphinx, Listens) {
+TEST_F(TestVoiceService, Listens) {
 	QList<QStringList> commands;
 
 	commands << (QStringList() << "auto" << "adjust");

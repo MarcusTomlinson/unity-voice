@@ -46,10 +46,11 @@ Description: client library for Unity voice service
 
 Package: unity-voice-service
 Architecture: any
+Multi-Arch: same
 Depends: sphinx-voxforge-hmm-en,
          sphinx-voxforge-lm-en,
          ${misc:Depends},
          ${shlibs:Depends},
 Description: Voice recognition service for unity
- This projects projects a DBus service that performs voice
+ This projects contains a DBus service that performs voice
  recognition.

@@ -1,0 +1,3 @@
+usr/include/*/libunityvoice/*
+usr/lib/*/libunityvoice*.so
+usr/lib/*/pkgconfig/libunityvoice*

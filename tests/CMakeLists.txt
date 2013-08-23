@@ -20,7 +20,7 @@ add_definitions(-DUNITY_VOICE_SERVICE_BIN="${CMAKE_BINARY_DIR}/src/service/unity
 
 set(
 	UNIT_TESTS_SRC
-	TestSphinx.cpp
+	TestVoiceService.cpp
 	main.cpp
 )
 
