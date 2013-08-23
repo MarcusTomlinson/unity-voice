@@ -21,10 +21,8 @@
 #include <QCoreApplication>
 #include <gtest/gtest.h>
 
-#include <libqtdbusmock/DBusMock.h>
 #include <libunityvoice/UnityVoice.h>
 
-using namespace QtDBusMock;
 using namespace LibUnityVoice;
 
 int main(int argc, char **argv) {
@@ -37,7 +35,6 @@ int main(int argc, char **argv) {
 
 	QCoreApplication application(argc, argv);
 
-	DBusMock::registerMetaTypes();
 	UnityVoice::registerMetaTypes();
 
 	::testing::InitGoogleTest(&argc, argv);

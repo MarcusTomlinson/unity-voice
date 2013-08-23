@@ -33,9 +33,6 @@ include_directories(${Qt5Test_INCLUDE_DIRS})
 pkg_check_modules(QTDBUSTEST REQUIRED libqtdbustest-1 REQUIRED)
 include_directories(${QTDBUSTEST_INCLUDE_DIRS})
 
-pkg_check_modules(QTDBUSMOCK REQUIRED libqtdbusmock-1 REQUIRED)
-include_directories(${QTDBUSMOCK_INCLUDE_DIRS})
-
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
