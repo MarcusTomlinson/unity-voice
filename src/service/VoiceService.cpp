@@ -33,11 +33,9 @@ VoiceService::VoiceService(const QDBusConnection &connection,
 		QObject(parent), m_adaptor(new VoiceAdaptor(this)), m_connection(
 				connection) {
 
-	QString name = deviceName;
-
 	if (!deviceName.isEmpty()) {
 		config = cmd_ln_init(0, sphinx_cmd_ln, TRUE, "-hmm", HMM_PATH, "-dict",
-				DICT_PATH, "-adcdev", name.toUtf8().data(), 0);
+				DICT_PATH, "-adcdev", deviceName.toUtf8().data(), 0);
 	} else {
 		config = cmd_ln_init(0, sphinx_cmd_ln, TRUE, "-hmm", HMM_PATH, "-dict",
 				DICT_PATH, 0);
@@ -57,6 +55,10 @@ VoiceService::VoiceService(const QDBusConnection &connection,
 
 VoiceService::~VoiceService() {
 	m_connection.unregisterObject("/com/canonical/unity/Voice");
+
+	if (ps) {
+		ps_free(ps);
+	}
 }
 
 QString VoiceService::utterance_loop() {

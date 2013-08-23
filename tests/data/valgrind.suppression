@@ -1,0 +1,42 @@
+###############################
+# PocketSphinx rules
+###############################
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   ...
+   fun:cmd_ln_init
+}
+
+###############################
+# Qt's usage of GLib
+###############################
+
+{
+   Ignore pthreads
+   Memcheck:Leak
+   ...
+   fun:pthread_create@@*
+}
+
+{
+   Glib memalign
+   Memcheck:Leak
+   ...
+   fun:posix_memalign
+}
+
+{
+   Ignore glib mainloop
+   Memcheck:Leak
+   ...
+   fun:g_main_context_push_thread_default
+}
+
+{
+   Ignore glib main context
+   Memcheck:Leak
+   ...
+   fun:g_main_context_new
+}
