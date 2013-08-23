@@ -43,7 +43,7 @@ public Q_SLOTS:
 	virtual QString listen(const QList<QStringList> &commands);
 
 protected:
-	QString utterance_loop();
+	QString utteranceLoop();
 
 	QString sphinxListen(fsg_model_t* fsg);
 

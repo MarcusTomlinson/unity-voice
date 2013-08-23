@@ -63,7 +63,7 @@ VoiceService::~VoiceService() {
 	}
 }
 
-QString VoiceService::utterance_loop() {
+QString VoiceService::utteranceLoop() {
 	ad_rec_t *ad;
 	int16 adbuf[4096];
 	int32 k, ts, rem;
@@ -163,7 +163,6 @@ QString VoiceService::utterance_loop() {
 		return QString();
 	}
 }
-/* End code taken from PocketSphinx */
 
 QString VoiceService::sphinxListen(fsg_model_t* fsg) {
 	// Get the fsg set or create one if none
@@ -184,7 +183,7 @@ QString VoiceService::sphinxListen(fsg_model_t* fsg) {
 
 	ps_update_fsgset(ps);
 
-	return utterance_loop();
+	return utteranceLoop();
 }
 
 int VoiceService::calculateNumberOfStates(const QList<QStringList> &commands) {
