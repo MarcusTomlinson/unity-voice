@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 2.8.9)
 
 set(GETTEXT_PACKAGE unity-voice)
 
+set(API_VERSION 1)
+set(ABI_VERSION 1)
+
 set(HMM_PATH "/usr/share/sphinx-voxforge-en/hmm/voxforge_en_sphinx.cd_cont_3000/" CACHE PATH "Path to hidden markov model")
 set(DICT_PATH "/usr/share/sphinx-voxforge-en/lm/voxforge_en_sphinx.cd_cont_3000/voxforge_en_sphinx.dic" CACHE PATH "Path to dictionary")
 

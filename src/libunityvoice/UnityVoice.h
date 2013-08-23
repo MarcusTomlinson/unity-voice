@@ -8,7 +8,12 @@
 #ifndef UNITYVOICE_H_
 #define UNITYVOICE_H_
 
-#include <libunityvoice/VoiceInterface.h>
+#include <QStringList>
+
+class ComCanonicalUnityVoiceInterface;
+
+typedef QList<QStringList> QListStringList;
+//Q_DECLARE_METATYPE(QListStringList)
 
 namespace LibUnityVoice {
 
@@ -16,6 +21,9 @@ class Q_DECL_EXPORT UnityVoice {
 public:
 	Q_DECL_EXPORT
 	static ComCanonicalUnityVoiceInterface* getInstance();
+
+	Q_DECL_EXPORT
+	static void registerMetaTypes();
 };
 
 } /* namespace LibUnityVoice */

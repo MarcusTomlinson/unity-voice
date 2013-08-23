@@ -24,7 +24,27 @@ Homepage: https://launchpad.net/unity-voice
 # just go ahead. ~unity-team will notice and sync up the code again.
 Vcs-Bzr: https://code.launchpad.net/~unity-team/unity-voice/trunk
 
-Package: unity-voice
+Package: libunityvoice1-dev
+Section: libdevel
+Architecture: any
+Multi-Arch: same
+Depends: libunityvoice1 (= ${binary:Version}),
+         ${misc:Depends},
+Description: client library for Unity voice service
+ This package contains files that are needed to build applications.
+
+Package: libunityvoice1
+Section: libs
+Architecture: any
+Multi-Arch: same
+Depends: unity-voice-service (= ${binary:Version}),
+         ${misc:Depends},
+         ${shlibs:Depends},
+Pre-Depends: ${misc:Pre-Depends},
+Description: client library for Unity voice service
+ This package contains shared libraries to be used by applications.
+
+Package: unity-voice-service
 Architecture: any
 Depends: sphinx-voxforge-hmm-en,
          sphinx-voxforge-lm-en,

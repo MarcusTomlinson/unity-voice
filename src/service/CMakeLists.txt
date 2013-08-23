@@ -1,8 +1,8 @@
 
 set(
 	UNITY_VOICE_SOURCES
-	"${SOURCE_DIR}/libunityvoice/DBusTypes.cpp"
 	VoiceService.cpp
+	main.cpp
 )
 
 qt5_add_dbus_adaptor(
@@ -13,36 +13,20 @@ qt5_add_dbus_adaptor(
 	VoiceAdaptor
 )
 
-add_library(
-	unity-voice
-	STATIC
+add_executable(
+	unity-voice-service
 	${UNITY_VOICE_SOURCES}
 )
 
 qt5_use_modules(
-	unity-voice
+	unity-voice-service
 	Core
 	DBus
 )
 
 target_link_libraries(
-	unity-voice
+	unity-voice-service
 	${POCKETSPHINX_LIBRARIES}
-)
-
-add_executable(
-	unity-voice-service
-	main.cpp
-)
-
-qt5_use_modules(
-	unity-voice-service
-	Core
-)
-
-target_link_libraries(
-	unity-voice-service
-	unity-voice
 )
 
 install(

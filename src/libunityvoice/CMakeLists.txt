@@ -1,23 +1,18 @@
 
 set(
-	USERMETRICSINPUT_PUBLIC_HEADERS
-	foo.h
-)
-
-list(
-	APPEND USERMETRICSINPUT_PUBLIC_HEADERS
-	"${CMAKE_CURRENT_BINARY_DIR}/${EXPORT_FILE_NAME}"
+	LIB_UNITY_VOICE_PUBLIC_HEADERS
+	UnityVoice.h
+	"${CMAKE_CURRENT_BINARY_DIR}/VoiceInterface.h"
 )
 
 set(LIB_UNITY_VOICE_SOURCES
-	DBusTypes.cpp
 	UnityVoice.cpp
 )
 
 set_source_files_properties(
 	"${DATA_DIR}/com.canonical.Unity.Voice.xml"
 	PROPERTIES
-	INCLUDE "libunityvoice/DBusTypes.h"
+	INCLUDE "libunityvoice/UnityVoice.h"
 	NO_NAMESPACE YES
 )
 
@@ -44,7 +39,7 @@ set_target_properties(
 	PROPERTIES
 	VERSION ${API_VERSION}.0.0
 	SOVERSION ${ABI_VERSION}
-	PUBLIC_HEADER ${USERMETRICSINPUT_PUBLIC_HEADERS}
+	PUBLIC_HEADER "${LIB_UNITY_VOICE_PUBLIC_HEADERS}"
 )
 
 install(

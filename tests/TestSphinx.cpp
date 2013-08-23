@@ -16,6 +16,7 @@
  * Author: Pete Woods <pete.woods@canonical.com>
  */
 
+#include <libunityvoice/VoiceInterface.h>
 #include <libunityvoice/UnityVoice.h>
 
 #include <pulse/pulseaudio.h>
@@ -36,18 +37,14 @@ class TestSphinx: public Test {
 protected:
 	TestSphinx() :
 			mainloop(0), api(0), context(0), operation_success(false), module_index(
-					PA_INVALID_INDEX ) {
+					PA_INVALID_INDEX ), temporaryFile(
+					QDir(QDir::tempPath()).filePath("test-voice-XXXXXX.source")) {
 
-		{
-			QTemporaryFile file(
-					QDir(QDir::tempPath()).filePath(
-							"test-voice-XXXXXX.source"));
-			file.setAutoRemove(true);
-			file.open();
-			file.close();
-			devicePath = file.fileName();
-			deviceName = QFileInfo(file).baseName();
-		}
+		temporaryFile.setAutoRemove(true);
+		temporaryFile.open();
+		temporaryFile.close();
+		devicePath = temporaryFile.fileName();
+		deviceName = QFileInfo(temporaryFile).baseName();
 
 		loadPipeModule();
 
@@ -277,6 +274,8 @@ protected:
 
 	QString deviceName;
 	QString devicePath;
+
+	QTemporaryFile temporaryFile;
 };
 
 TEST_F(TestSphinx, Listens) {
