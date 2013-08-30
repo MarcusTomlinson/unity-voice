@@ -21,7 +21,7 @@
 
 #include <QStringList>
 
-class ComCanonicalUnityVoiceInterface;
+class Q_DECL_EXPORT ComCanonicalUnityVoiceInterface;
 
 typedef QList<QStringList> QListStringList;
 

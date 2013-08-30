@@ -1,17 +1,6 @@
 libunityvoice.so.1 libunityvoice1 #MINVER#
- (c++)"void qDBusMarshallHelper<QList<QStringList> >(QDBusArgument&, QList<QStringList> const*)@Base" 0.1
- (c++)"void qDBusDemarshallHelper<QList<QStringList> >(QDBusArgument const&, QList<QStringList>*)@Base" 0.1
- (c++)"int qRegisterNormalizedMetaType<QList<QStringList> >(QByteArray const&, QList<QStringList>*, QtPrivate::MetaTypeDefinedHelper<QList<QStringList>, QMetaTypeId2<QList<QStringList> >::Defined&&(!QMetaTypeId2<QList<QStringList> >::IsBuiltIn)>::DefinedType)@Base" 0.1
- (c++)"QByteArray::~QByteArray()@Base" 0.1
- (c++)"QByteArray::~QByteArray()@Base" 0.1
  (c++)"LibUnityVoice::UnityVoice::getInstance()@Base" 0.1
  (c++)"LibUnityVoice::UnityVoice::registerMetaTypes()@Base" 0.1
- (c++)"QVarLengthArray<char, 24>::append(char const*, int)@Base" 0.1
- (c++)"QVarLengthArray<char, 24>::realloc(int, int)@Base" 0.1
- (c++)"QtMetaTypePrivate::QMetaTypeFunctionHelper<QList<QStringList>, true>::Create(void const*)@Base" 0.1
- (c++)"QtMetaTypePrivate::QMetaTypeFunctionHelper<QList<QStringList>, true>::Delete(void*)@Base" 0.1
- (c++)"QtMetaTypePrivate::QMetaTypeFunctionHelper<QList<QStringList>, true>::Destruct(void*)@Base" 0.1
- (c++)"QtMetaTypePrivate::QMetaTypeFunctionHelper<QList<QStringList>, true>::Construct(void*, void const*)@Base" 0.1
  (c++)"ComCanonicalUnityVoiceInterface::qt_metacall(QMetaObject::Call, int, void**)@Base" 0.1
  (c++)"ComCanonicalUnityVoiceInterface::qt_metacast(char const*)@Base" 0.1
  (c++)"ComCanonicalUnityVoiceInterface::HeardSomething()@Base" 0.1
@@ -23,24 +12,7 @@ libunityvoice.so.1 libunityvoice1 #MINVER#
  (c++)"ComCanonicalUnityVoiceInterface::~ComCanonicalUnityVoiceInterface()@Base" 0.1
  (c++)"ComCanonicalUnityVoiceInterface::~ComCanonicalUnityVoiceInterface()@Base" 0.1
  (c++)"ComCanonicalUnityVoiceInterface::~ComCanonicalUnityVoiceInterface()@Base" 0.1
- (c++)"QList<QStringList>::detach_helper_grow(int, int)@Base" 0.1
- (c++)"QList<QStringList>::append(QStringList const&)@Base" 0.1
- (c++)"QList<QStringList>::QList(QList<QStringList> const&)@Base" 0.1
- (c++)"QList<QStringList>::QList(QList<QStringList> const&)@Base" 0.1
- (c++)"QList<QStringList>::~QList()@Base" 0.1
- (c++)"QList<QStringList>::~QList()@Base" 0.1
- (c++)"QList<QString>::QList(QList<QString> const&)@Base" 0.1
- (c++)"QList<QString>::QList(QList<QString> const&)@Base" 0.1
- (c++)"QList<QString>::~QList()@Base" 0.1
- (c++)"QList<QString>::~QList()@Base" 0.1
- (c++)"QList<QVariant>::detach_helper_grow(int, int)@Base" 0.1
- (c++)"QList<QVariant>::append(QVariant const&)@Base" 0.1
- (c++)"QList<QVariant>::~QList()@Base" 0.1
- (c++)"QList<QVariant>::~QList()@Base" 0.1
- (c++)"QString::~QString()@Base" 0.1
- (c++)"QString::~QString()@Base" 0.1
  (c++)"ComCanonicalUnityVoiceInterface::metaObject() const@Base" 0.1
  (c++)"typeinfo for ComCanonicalUnityVoiceInterface@Base" 0.1
  (c++)"typeinfo name for ComCanonicalUnityVoiceInterface@Base" 0.1
  (c++)"vtable for ComCanonicalUnityVoiceInterface@Base" 0.1
- (c++)"QMetaTypeId<QList<QStringList> >::qt_metatype_id()::metatype_id@Base" 0.1
