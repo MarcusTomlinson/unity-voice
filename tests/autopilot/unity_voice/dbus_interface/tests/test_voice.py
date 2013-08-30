@@ -13,9 +13,8 @@ import dbus
 import dbus.service
 import dbus.mainloop.glib
 import gobject
+import glob
 import subprocess
-import time
-import shutil
 
 from unity_voice import DBusTestCase
 
@@ -57,11 +56,12 @@ class DBusInterfaceTests(AutopilotTestCase, DBusTestCase):
         self.sound_dir = abspath(join(dirname(__file__), '..', '..', '..', '..', 'data', 'sounds'))
 
     def application_binary(self):
-        # FIXME: What's the proper way to find this?
-        return abspath(join(dirname(__file__), '..', '..', '..', '..', '..', '..', 'trunk-build/src/service/unity-voice-service'))
+        cmds = glob.glob('/usr/lib/*/unity-voice-service')
+        self.assertThat(len(cmds), Equals(1))
+        return cmds[0] 
 
     def launch_application(self):
-        return subprocess.Popen([application_binary(), "unity-voice-test"])
+        return subprocess.Popen([self.application_binary(), "unity-voice-test"])
 
     def tearDown(self):
         super(DBusInterfaceTests, self).tearDown()
