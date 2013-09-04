@@ -52,3 +52,14 @@ Depends: sphinx-voxforge-hmm-en,
 Description: Voice recognition service for unity
  This projects contains a DBus service that performs voice
  recognition.
+
+Package: unity-voice-autopilot
+Architecture: all
+Depends: unity-voice-service (>= ${binary:Version}),
+         python-autopilot,
+         ${misc:Depends},
+         ${shlibs:Depends},
+Description: Voice recognition autopilot tests
+ This package contains all the autopilot integration tests for testing the
+ unity-voice functionality.
+
