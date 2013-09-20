@@ -6,4 +6,4 @@ SOURCEDIR="$PWD"
 BRANCHNAME=`basename $SOURCEDIR`
 BUILDDIR="$SOURCEDIR/../$BRANCHNAME-build"
 
-$BUILDDIR/src/unity-voice-service
+$BUILDDIR/src/service/unity-voice-service
