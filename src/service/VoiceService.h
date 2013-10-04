@@ -63,6 +63,8 @@ protected:
 	cmd_ln_t *config;
 
 	ps_decoder_t *ps;
+
+	QHash< QString, bool > m_dict;
 };
 
 #endif /* VOICESERVICE_H_ */

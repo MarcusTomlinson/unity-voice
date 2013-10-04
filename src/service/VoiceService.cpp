@@ -52,6 +52,24 @@ VoiceService::VoiceService(const QDBusConnection &connection,
 		throw logic_error("Unable to initialize Sphinx decoder");
 	}
 
+	QFile file( DICT_PATH );
+	if( file.open( QIODevice::ReadOnly | QIODevice::Text ) )
+	{
+		QTextStream in( &file );
+		while( !in.atEnd() )
+		{
+			QString line = in.readLine();
+			int space_pos = line.indexOf( '\t', 1 );
+			int bracket_pos = line.indexOf( '(', 1 );
+
+			if( bracket_pos == -1 && space_pos != -1 )
+			{
+				m_dict.insert( line.left( space_pos ), 0 );
+			}
+		}
+	}
+	file.close();
+
 	m_connection.registerObject("/com/canonical/Unity/Voice", this);
 }
 
@@ -204,8 +222,13 @@ int VoiceService::writeCommand(fsg_model_t *fsg, const QStringList &command,
 	if (!command.isEmpty()) {
 		const QString &word = command.first();
 		QString lower = word.toLower();
-		int wid = fsg_model_word_add(fsg, lower.toUtf8().data());
-		fsg_model_trans_add(fsg, 0, ++stateNum, commandProbability, wid);
+
+		if( m_dict.contains( lower ) )
+		{
+			int wid = fsg_model_word_add(fsg, lower.toUtf8().data());
+			fsg_model_trans_add(fsg, 0, stateNum + 1, commandProbability, wid);
+		}
+		++stateNum;
 	}
 
 	// the rest of the transitions are certain (straight path)
@@ -214,8 +237,12 @@ int VoiceService::writeCommand(fsg_model_t *fsg, const QStringList &command,
 	++word;
 	for (; word != command.constEnd(); ++word) {
 		QString lower = word->toLower();
-		int wid = fsg_model_word_add(fsg, lower.toUtf8().data());
-		fsg_model_trans_add(fsg, stateNum, stateNum + 1, 1.0, wid);
+
+		if( m_dict.contains( lower ) )
+		{
+			int wid = fsg_model_word_add(fsg, lower.toUtf8().data());
+			fsg_model_trans_add(fsg, stateNum, stateNum + 1, 1.0, wid);
+		}
 		++stateNum;
 	}
 
