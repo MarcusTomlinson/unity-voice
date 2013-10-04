@@ -316,7 +316,6 @@ fsg_model_t* VoiceService::buildGrammar(const QList<QStringList> &commands) {
 
 QString VoiceService::listen(const QList<QStringList> &commands) {
 	if (commands.isEmpty()) {
-		sendErrorReply( ErrorName::StateError, "Command list empty" );
 		return QString();
 	}
 
