@@ -24,6 +24,11 @@
 
 using namespace std;
 
+const QString VoiceService::ErrorName::StateError = "StateError";
+const QString VoiceService::ErrorName::AudioDeviceOpenError = "AudioDeviceOpenError";
+const QString VoiceService::ErrorName::ReadError = "ReadError";
+const QString VoiceService::ErrorName::NoAudioError = "NoAudioError";
+
 arg_t VoiceService::sphinx_cmd_ln[] = { POCKETSPHINX_OPTIONS, { "-adcdev",
 		ARG_STRING, NULL, "Name of audio device to use for input." },
 		CMDLN_EMPTY_OPTION };
@@ -93,35 +98,52 @@ QString VoiceService::utteranceLoop() {
 
 	if ((ad = ad_open_dev(cmd_ln_str_r(config, "-adcdev"),
 			(int) cmd_ln_float32_r(config, "-samprate"))) == NULL) {
-		throw logic_error("Failed to open audio device");
+		sendErrorReply( ErrorName::AudioDeviceOpenError, "Failed to open audio device" );
+		return QString();
 	}
 
 	// Initialize continuous listening module
 	if ((cont = cont_ad_init(ad, ad_read)) == NULL) {
-		throw logic_error("Failed to initialize voice activity detection");
+		sendErrorReply( ErrorName::AudioDeviceOpenError, "Failed to initialize voice activity detection" );
+		return QString();
 	}
 	if (ad_start_rec(ad) < 0) {
-		throw logic_error("Failed to start recording");
+		sendErrorReply( ErrorName::ReadError, "Failed to start recording" );
+		return QString();
 	}
 
 	// Indicate listening for next utterance
 	qDebug() << "Voice query is listening";
 	m_adaptor->Listening();
 
+	int attempts = 0;
 	/* Wait data for next utterance */
-	while ((k = cont_ad_read(cont, adbuf, 4096)) == 0)
-		QThread::msleep(100);
+	while ((k = cont_ad_read (cont, adbuf, 4096)) == 0) {
+		++attempts;
+		if(attempts == 100) {
+			break;
+		}
+		QThread::msleep (100);
+	}
+
+	if (k == 0) {
+		sendErrorReply( ErrorName::NoAudioError, "Nothing was heard" );
+		return QString();
+	}
 
 	if (k < 0) {
-		throw logic_error("Failed to read audio");
+		sendErrorReply( ErrorName::ReadError, "Failed to read audio" );
+		return QString();
 	}
 
 	/*
 	 * Non-zero amount of data received; start recognition of new utterance.
 	 * NULL argument to uttproc_begin_utt => automatic generation of utterance-id.
 	 */
-	if (ps_start_utt(ps, NULL) < 0)
-		throw logic_error("Failed to start utterance");
+	if (ps_start_utt(ps, NULL) < 0){
+		sendErrorReply( ErrorName::ReadError, "Failed to start utterance" );
+		return QString();
+	}
 
 	qDebug() << "Voice query has heard something";
 	m_adaptor->HeardSomething();
@@ -134,8 +156,10 @@ QString VoiceService::utteranceLoop() {
 	/* Decode utterance until end (marked by a "long" silence, >1sec) */
 	for (;;) {
 		/* Read non-silence audio data, if any, from continuous listening module */
-		if ((k = cont_ad_read(cont, adbuf, 4096)) < 0)
-			throw logic_error("Failed to read audio");
+		if ((k = cont_ad_read(cont, adbuf, 4096)) < 0){
+			sendErrorReply( ErrorName::ReadError, "Failed to read audio" );
+			return QString();
+		}
 		if (k == 0) {
 			/*
 			 * No speech data available; check current timestamp with most recent
@@ -146,6 +170,12 @@ QString VoiceService::utteranceLoop() {
 		} else {
 			/* New speech data received; note current timestamp */
 			ts = cont->read_ts;
+
+			/* Check for timeout */
+			if ((cont->read_ts - ts) > DEFAULT_SAMPLES_PER_SEC * 30) {
+				sendErrorReply( ErrorName::NoAudioError, "Nothing was heard" );
+				return QString();
+			}
 		}
 
 		/*
@@ -262,6 +292,12 @@ fsg_model_t* VoiceService::buildGrammar(const QList<QStringList> &commands) {
 
 	fsg_model_t *fsg = fsg_model_init("<unity-voice.GRAM>", ps_get_logmath(ps),
 			cmd_ln_float32_r(config, "-lw"), numberOfStates);
+
+	if( fsg == NULL ){
+		sendErrorReply( ErrorName::StateError, "Could not build Sphinx grammar. Is sphinx-voxforge installed?" );
+		return NULL;
+	}
+
 	fsg->start_state = 0;
 	fsg->final_state = 1;
 
@@ -280,18 +316,16 @@ fsg_model_t* VoiceService::buildGrammar(const QList<QStringList> &commands) {
 
 QString VoiceService::listen(const QList<QStringList> &commands) {
 	if (commands.isEmpty()) {
-		return "";
+		sendErrorReply( ErrorName::StateError, "Command list empty" );
+		return QString();
 	}
 
-	try {
-		m_adaptor->Loading();
-		fsg_model_t *fsg = buildGrammar(commands);
-		return sphinxListen(fsg);
-	} catch (exception &e) {
-		setDelayedReply(true);
-		m_connection.send(
-				message().createErrorReply(QDBusError::InternalError,
-						e.what()));
-		return "";
+	m_adaptor->Loading();
+	fsg_model_t *fsg = buildGrammar(commands);
+
+	if( fsg == NULL ){
+		return QString();
 	}
+
+	return sphinxListen(fsg);
 }
