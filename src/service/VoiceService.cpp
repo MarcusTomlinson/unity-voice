@@ -59,12 +59,14 @@ VoiceService::VoiceService(const QDBusConnection &connection,
 		while( !in.atEnd() )
 		{
 			QString line = in.readLine();
-			int space_pos = line.indexOf( '\t', 1 );
-			int bracket_pos = line.indexOf( '(', 1 );
 
-			if( bracket_pos == -1 && space_pos != -1 )
+			// an open bracket occurs in duplicates, tab end the word
+			bool duplicate = ( line.indexOf( '(', 1 ) != -1 );
+			int tab_pos = line.indexOf( '\t', 1 );
+
+			if( !duplicate && tab_pos != -1 )
 			{
-				m_dict.insert( line.left( space_pos ), 0 );
+				m_dict.insert( line.left( tab_pos ), 0 );
 			}
 		}
 	}
