@@ -24,10 +24,10 @@
 
 using namespace std;
 
-const QString VoiceService::ErrorName::StateError = "StateError";
-const QString VoiceService::ErrorName::AudioDeviceOpenError = "AudioDeviceOpenError";
-const QString VoiceService::ErrorName::ReadError = "ReadError";
-const QString VoiceService::ErrorName::NoAudioError = "NoAudioError";
+const QString VoiceService::ErrorName::StateError = "VoiceService.StateError";
+const QString VoiceService::ErrorName::AudioDeviceOpenError = "VoiceService.AudioDeviceOpenError";
+const QString VoiceService::ErrorName::ReadError = "VoiceService.ReadError";
+const QString VoiceService::ErrorName::NoAudioError = "VoiceService.NoAudioError";
 
 arg_t VoiceService::sphinx_cmd_ln[] = { POCKETSPHINX_OPTIONS, { "-adcdev",
 		ARG_STRING, NULL, "Name of audio device to use for input." },
