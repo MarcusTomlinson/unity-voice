@@ -37,7 +37,7 @@ bool PronounceDict::loadDictionary( const QString& dictPath )
 	QTextStream in( &file );
 	while( !in.atEnd() )
 	{
-		// read next line
+		//-- read next line
 		QString line = in.readLine();
 
 		// ignore line if empty or begins with ";;;" / "#"
@@ -49,39 +49,62 @@ bool PronounceDict::loadDictionary( const QString& dictPath )
 			continue;
 		}
 
-		// word ends at either first occurrence of tab, or '(' from 2nd char
-		int word_end_pos = 0;
-		int tab_pos = line.indexOf( '\t', 0 );
-		int bracket_pos = line.indexOf( '(', 1 );
+		//-- word ends at first occurrence of tab, space, or '(' from 2nd char
+		int word_end_pos = 1;
 
-		if( bracket_pos != -1 && bracket_pos < tab_pos )
+		for( ; word_end_pos < line.size(); ++word_end_pos )
 		{
-			word_end_pos = bracket_pos;
-		}
-		else
-		{
-			word_end_pos = tab_pos;
+			if(
+				line[word_end_pos] == '\t' ||
+				line[word_end_pos] == ' ' ||
+				line[word_end_pos] == '(' )
+			{
+				break;
+			}
 		}
 
 		QString word = line.left( word_end_pos ).toLower();
 
-		// pronunciation starts just after last occurrence of a tab
+		//-- pronunciation starts just after last occurrence of a coninuous tabs / spaces
 		int pronounce_start_pos = 0;
-		int next_tab_pos = 0;
 
-		while( next_tab_pos != -1 )
+		// if we are reading a htk dictionary, skip to after [...] section
+		if( line.indexOf( '[', 0 ) > 0 )
 		{
-			next_tab_pos = line.indexOf( '\t', next_tab_pos + 1 );
+			pronounce_start_pos = line.indexOf( ']', 0 ) + 1;
+		}
+		// if we're on a duplicate word line, skip to after ')'
+		else if( line[word_end_pos] == '(' )
+		{
+			pronounce_start_pos = line.indexOf( ')', word_end_pos ) + 1;
+		}
+		else
+		{
+			pronounce_start_pos = word_end_pos;
+		}
 
-			if( next_tab_pos != -1 )
+		// find first non-space, non-tab
+		for( ; pronounce_start_pos < line.size(); ++pronounce_start_pos )
+		{
+			if(
+				line[pronounce_start_pos] != '\t' &&
+				line[pronounce_start_pos] != ' ')
 			{
-				pronounce_start_pos = next_tab_pos;
+				break;
 			}
 		}
 
-		QString pronunciation = line.right( pronounce_start_pos );
+		// construct pronunciation (skipping numeric chars)
+		QString pronunciation;
+		for( ; pronounce_start_pos < line.size(); ++pronounce_start_pos )
+		{
+			if( !line[pronounce_start_pos].isDigit() )
+			{
+				pronunciation.push_back( line[pronounce_start_pos] );
+			}
+		}
 
-		// insert pronunciation into dictionary
+		//-- insert pronunciation into dictionary
 		QList<QString> pronunciation_list;
 
 		if( m_dict.contains( word ) )
@@ -93,6 +116,7 @@ bool PronounceDict::loadDictionary( const QString& dictPath )
 		m_dict.insert( word, pronunciation_list );
 	}
 
+	// close dictionary file
 	file.close();
 
 	return true;

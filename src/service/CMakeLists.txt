@@ -1,7 +1,6 @@
 
 set(
         UNITY_VOICE_SOURCES
-        PronounceDict.cpp
         VoiceService.cpp
         main.cpp
 )
@@ -27,6 +26,7 @@ qt5_use_modules(
 
 target_link_libraries(
 	unity-voice-service
+        unityvoice
 	${POCKETSPHINX_LIBRARIES}
 )
 

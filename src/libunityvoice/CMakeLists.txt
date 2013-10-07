@@ -7,6 +7,7 @@ set(
 
 set(
         LIB_UNITY_VOICE_SOURCES
+        PronounceDict.cpp
 	UnityVoice.cpp
 )
 

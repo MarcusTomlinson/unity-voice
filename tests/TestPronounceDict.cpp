@@ -16,9 +16,10 @@
  * Author: Marcus Tomlinson <marcus.tomlinson@canonical.com>
  */
 
-#include <service/PronounceDict.h>
+#include <libunityvoice/PronounceDict.h>
 
 #include <gtest/gtest.h>
+#include <iostream>
 
 using namespace testing;
 
@@ -27,15 +28,61 @@ namespace {
 class TestPronounceDict: public Test {
 protected:
 	void testHashes() {
+		ASSERT_TRUE( m_dict.loadDictionary( PRONOUCE_DICT_HASHES ) );
+
+		QList<QString> pronunciation_list = m_dict.getPronunciations( "hello" );
+		ASSERT_TRUE( pronunciation_list.size() == 1 );
+		ASSERT_TRUE( pronunciation_list.value( 0 ) == "hh ax l ow" );
+
+		pronunciation_list = m_dict.getPronunciations( "there" );
+		ASSERT_TRUE( pronunciation_list.size() == 2 );
+		ASSERT_TRUE( pronunciation_list.value( 0 ) == "dh ea" );
+		ASSERT_TRUE( pronunciation_list.value( 1 ) == "dh ea r" );
 	}
 
 	void testSemicolon() {
+		ASSERT_TRUE( m_dict.loadDictionary( PRONOUCE_DICT_SEMICOLON ) );
+
+		QList<QString> pronunciation_list = m_dict.getPronunciations( "hello" );
+		ASSERT_TRUE( pronunciation_list.size() == 2 );
+		ASSERT_TRUE( pronunciation_list.value( 0 ) == "HH AH L OW" );
+		ASSERT_TRUE( pronunciation_list.value( 1 ) == "HH EH L OW" );
+
+		pronunciation_list = m_dict.getPronunciations( "there" );
+		ASSERT_TRUE( pronunciation_list.size() == 1 );
+		ASSERT_TRUE( pronunciation_list.value( 0 ) == "DH EH R" );
 	}
 
 	void testLowercase() {
+		ASSERT_TRUE( m_dict.loadDictionary( PRONOUCE_DICT_LOWERCASE ) );
+
+		QList<QString> pronunciation_list = m_dict.getPronunciations( "hello" );
+		ASSERT_TRUE( pronunciation_list.size() == 2 );
+		ASSERT_TRUE( pronunciation_list.value( 0 ) == "HH AH L OW" );
+		ASSERT_TRUE( pronunciation_list.value( 1 ) == "HH EH L OW" );
+
+		pronunciation_list = m_dict.getPronunciations( "there" );
+		ASSERT_TRUE( pronunciation_list.size() == 1 );
+		ASSERT_TRUE( pronunciation_list.value( 0 ) == "DH EH R" );
 	}
 
 	void testHtk() {
+		ASSERT_TRUE( m_dict.loadDictionary( PRONOUCE_DICT_HTK ) );
+
+		QList<QString> pronunciation_list = m_dict.getPronunciations( "abandon" );
+		ASSERT_TRUE( pronunciation_list.size() == 1 );
+		ASSERT_TRUE( pronunciation_list.value( 0 ) == "ax b ae n d ax n" );
+
+		pronunciation_list = m_dict.getPronunciations( "abandoned" );
+		ASSERT_TRUE( pronunciation_list.size() == 1 );
+		ASSERT_TRUE( pronunciation_list.value( 0 ) == "ax b ae n d ax n d" );
+
+		pronunciation_list = m_dict.getPronunciations( "abandonment" );
+		ASSERT_TRUE( pronunciation_list.size() == 1 );
+		ASSERT_TRUE( pronunciation_list.value( 0 ) == "ax b ae n d ax n m ax n t" );
+
+		pronunciation_list = m_dict.getPronunciations( "zoom" );
+		ASSERT_TRUE( pronunciation_list.size() == 0 );
 	}
 
 	PronounceDict m_dict;
