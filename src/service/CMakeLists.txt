@@ -1,8 +1,9 @@
 
 set(
-	UNITY_VOICE_SOURCES
-	VoiceService.cpp
-	main.cpp
+        UNITY_VOICE_SOURCES
+        PronounceDict.cpp
+        VoiceService.cpp
+        main.cpp
 )
 
 qt5_add_dbus_adaptor(

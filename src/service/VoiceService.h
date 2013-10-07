@@ -19,6 +19,8 @@
 #ifndef VOICESERVICE_H_
 #define VOICESERVICE_H_
 
+#include <PronounceDict.h>
+
 #include <QList>
 #include <QString>
 #include <QScopedPointer>
@@ -72,7 +74,7 @@ protected:
 
 	ps_decoder_t *ps;
 
-	QHash< QString, bool > m_dict;
+	PronounceDict m_dict;
 };
 
 #endif /* VOICESERVICE_H_ */

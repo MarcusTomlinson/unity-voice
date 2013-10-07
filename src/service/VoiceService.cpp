@@ -57,25 +57,10 @@ VoiceService::VoiceService(const QDBusConnection &connection,
 		throw logic_error("Unable to initialize Sphinx decoder");
 	}
 
-	QFile file( DICT_PATH );
-	if( file.open( QIODevice::ReadOnly | QIODevice::Text ) )
+	if( !m_dict.loadDictionary( DICT_PATH ) )
 	{
-		QTextStream in( &file );
-		while( !in.atEnd() )
-		{
-			QString line = in.readLine();
-
-			// an open bracket occurs in duplicates, tab end the word
-			bool duplicate = ( line.indexOf( '(', 1 ) != -1 );
-			int tab_pos = line.indexOf( '\t', 1 );
-
-			if( !duplicate && tab_pos != -1 )
-			{
-				m_dict.insert( line.left( tab_pos ), 0 );
-			}
-		}
+		throw logic_error("Unable to initialize pronunciations dictionary");
 	}
-	file.close();
 
 	m_connection.registerObject("/com/canonical/Unity/Voice", this);
 }

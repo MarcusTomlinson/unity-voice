@@ -5,7 +5,8 @@ set(
 	"${CMAKE_CURRENT_BINARY_DIR}/VoiceInterface.h"
 )
 
-set(LIB_UNITY_VOICE_SOURCES
+set(
+        LIB_UNITY_VOICE_SOURCES
 	UnityVoice.cpp
 )
 
