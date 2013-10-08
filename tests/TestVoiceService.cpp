@@ -203,7 +203,7 @@ protected:
 		pa_context_set_state_callback(context,
 				context_state_callback_unload_module, this);
 
-		ASSERT_GE(pa_context_connect (context, NULL, PA_CONTEXT_NOFLAGS, NULL ),
+		ASSERT_GE(pa_context_connect(context, NULL, PA_CONTEXT_NOFLAGS, NULL),
 				0);
 
 		int ret = 0;
@@ -233,7 +233,7 @@ protected:
 		pa_context_set_state_callback(context,
 				context_state_callback_load_module, this);
 
-		ASSERT_GE(pa_context_connect (context, NULL, PA_CONTEXT_NOFLAGS, NULL ),
+		ASSERT_GE(pa_context_connect(context, NULL, PA_CONTEXT_NOFLAGS, NULL),
 				0);
 
 		int ret = 0;

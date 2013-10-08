@@ -19,6 +19,8 @@
 #ifndef VOICESERVICE_H_
 #define VOICESERVICE_H_
 
+#include <libunityvoice/PronounceDict.h>
+
 #include <QList>
 #include <QString>
 #include <QScopedPointer>
@@ -63,6 +65,8 @@ protected:
 	cmd_ln_t *config;
 
 	ps_decoder_t *ps;
+
+	PronounceDict m_dict;
 };
 
 #endif /* VOICESERVICE_H_ */

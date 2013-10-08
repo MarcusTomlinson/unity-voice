@@ -1,8 +1,8 @@
 
 set(
-	UNITY_VOICE_SOURCES
-	VoiceService.cpp
-	main.cpp
+        UNITY_VOICE_SOURCES
+        VoiceService.cpp
+        main.cpp
 )
 
 qt5_add_dbus_adaptor(
@@ -26,6 +26,7 @@ qt5_use_modules(
 
 target_link_libraries(
 	unity-voice-service
+        unityvoice
 	${POCKETSPHINX_LIBRARIES}
 )
 

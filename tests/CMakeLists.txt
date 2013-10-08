@@ -12,8 +12,14 @@ include_directories(${GTEST_INCLUDE_DIRS})
 add_definitions(-DSOUNDS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/data/sounds")
 add_definitions(-DUNITY_VOICE_SERVICE_BIN="${CMAKE_BINARY_DIR}/src/service/unity-voice-service")
 
+add_definitions(-DPRONOUCE_DICT_HASHES="${CMAKE_CURRENT_SOURCE_DIR}/data/test-pronounce-dict-hashes.dic")
+add_definitions(-DPRONOUCE_DICT_SEMICOLON="${CMAKE_CURRENT_SOURCE_DIR}/data/test-pronounce-dict-semicolon.dic")
+add_definitions(-DPRONOUCE_DICT_LOWERCASE="${CMAKE_CURRENT_SOURCE_DIR}/data/test-pronounce-dict-lowercase.dic")
+add_definitions(-DPRONOUCE_DICT_HTK="${CMAKE_CURRENT_SOURCE_DIR}/data/test-pronounce-dict-htk.dic")
+
 set(
 	UNIT_TESTS_SRC
+        TestPronounceDict.cpp
 	TestVoiceService.cpp
 	main.cpp
 )
