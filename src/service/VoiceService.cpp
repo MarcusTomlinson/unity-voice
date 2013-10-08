@@ -24,11 +24,6 @@
 
 using namespace std;
 
-const QString VoiceService::ErrorName::StateError = "VoiceService.StateError";
-const QString VoiceService::ErrorName::AudioDeviceOpenError = "VoiceService.AudioDeviceOpenError";
-const QString VoiceService::ErrorName::ReadError = "VoiceService.ReadError";
-const QString VoiceService::ErrorName::NoAudioError = "VoiceService.NoAudioError";
-
 arg_t VoiceService::sphinx_cmd_ln[] = { POCKETSPHINX_OPTIONS, { "-adcdev",
 		ARG_STRING, NULL, "Name of audio device to use for input." },
 		CMDLN_EMPTY_OPTION };
@@ -83,17 +78,17 @@ QString VoiceService::utteranceLoop() {
 
 	if ((ad = ad_open_dev(cmd_ln_str_r(config, "-adcdev"),
 			(int) cmd_ln_float32_r(config, "-samprate"))) == NULL) {
-		sendErrorReply( ErrorName::AudioDeviceOpenError, "Failed to open audio device" );
+    sendErrorReply( QDBusError::Failed, "Failed to open audio device" );
 		return QString();
 	}
 
 	// Initialize continuous listening module
 	if ((cont = cont_ad_init(ad, ad_read)) == NULL) {
-		sendErrorReply( ErrorName::AudioDeviceOpenError, "Failed to initialize voice activity detection" );
+    sendErrorReply( QDBusError::Failed, "Failed to initialize voice activity detection" );
 		return QString();
 	}
 	if (ad_start_rec(ad) < 0) {
-		sendErrorReply( ErrorName::ReadError, "Failed to start recording" );
+    sendErrorReply( QDBusError::Failed, "Failed to start recording" );
 		return QString();
 	}
 
@@ -112,12 +107,12 @@ QString VoiceService::utteranceLoop() {
 	}
 
 	if (k == 0) {
-		sendErrorReply( ErrorName::NoAudioError, "Nothing was heard" );
+    sendErrorReply( QDBusError::Failed, "Nothing was heard" );
 		return QString();
 	}
 
 	if (k < 0) {
-		sendErrorReply( ErrorName::ReadError, "Failed to read audio" );
+    sendErrorReply( QDBusError::Failed, "Failed to read audio" );
 		return QString();
 	}
 
@@ -126,7 +121,7 @@ QString VoiceService::utteranceLoop() {
 	 * NULL argument to uttproc_begin_utt => automatic generation of utterance-id.
 	 */
 	if (ps_start_utt(ps, NULL) < 0){
-		sendErrorReply( ErrorName::ReadError, "Failed to start utterance" );
+    sendErrorReply( QDBusError::Failed, "Failed to start utterance" );
 		return QString();
 	}
 
@@ -142,7 +137,7 @@ QString VoiceService::utteranceLoop() {
 	for (;;) {
 		/* Read non-silence audio data, if any, from continuous listening module */
 		if ((k = cont_ad_read(cont, adbuf, 4096)) < 0){
-			sendErrorReply( ErrorName::ReadError, "Failed to read audio" );
+      sendErrorReply( QDBusError::Failed, "Failed to read audio" );
 			return QString();
 		}
 		if (k == 0) {
@@ -158,7 +153,7 @@ QString VoiceService::utteranceLoop() {
 
 			/* Check for timeout */
 			if ((cont->read_ts - ts) > DEFAULT_SAMPLES_PER_SEC * 30) {
-				sendErrorReply( ErrorName::NoAudioError, "Nothing was heard" );
+        sendErrorReply( QDBusError::Failed, "Nothing was heard" );
 				return QString();
 			}
 		}
@@ -279,7 +274,7 @@ fsg_model_t* VoiceService::buildGrammar(const QList<QStringList> &commands) {
 			cmd_ln_float32_r(config, "-lw"), numberOfStates);
 
 	if( fsg == NULL ){
-		sendErrorReply( ErrorName::StateError, "Could not build Sphinx grammar. Is sphinx-voxforge installed?" );
+    sendErrorReply( QDBusError::Failed, "Could not build Sphinx grammar. Is sphinx-voxforge installed?" );
 		return NULL;
 	}
 

@@ -41,14 +41,6 @@ public:
 
 	virtual ~VoiceService();
 
-	struct ErrorName
-	{
-		static const QString StateError;
-		static const QString AudioDeviceOpenError;
-		static const QString ReadError;
-		static const QString NoAudioError;
-	};
-
 public Q_SLOTS:
 	virtual QString listen(const QList<QStringList> &commands);
 

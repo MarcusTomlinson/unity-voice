@@ -24,13 +24,10 @@
 
 class Q_DECL_EXPORT PronounceDict final {
 public:
-	Q_DECL_EXPORT
 	bool loadDictionary(const QString& dictPath );
 
-	Q_DECL_EXPORT
 	bool contains( const QString& word );
 
-	Q_DECL_EXPORT
 	QList<QString> getPronunciations( const QString& word );
 
 private:
