@@ -27,97 +27,81 @@ namespace {
 
 class TestPronounceDict: public Test {
 protected:
-	void testHashes() {
-		EXPECT_TRUE( m_dict.loadDictionary( PRONOUCE_DICT_HASHES ) );
-
-		EXPECT_TRUE( m_dict.contains( "hello" ) );
-		QList<QString> pronunciation_list = m_dict.getPronunciations( "hello" );
-		EXPECT_EQ( 1, pronunciation_list.size() );
-		EXPECT_EQ( "hh ax l ow", pronunciation_list.value( 0 ) );
-
-		EXPECT_TRUE( m_dict.contains( "there" ) );
-		pronunciation_list = m_dict.getPronunciations( "there" );
-		EXPECT_EQ( 2, pronunciation_list.size() );
-		EXPECT_EQ( "dh ea", pronunciation_list.value( 0 ) );
-		EXPECT_EQ( "dh ea r", pronunciation_list.value( 1 ) );
-
-		EXPECT_FALSE( m_dict.contains( "goodbye" ) );
-	}
-
-	void testSemicolons() {
-		EXPECT_TRUE( m_dict.loadDictionary( PRONOUCE_DICT_SEMICOLON ) );
-
-		EXPECT_TRUE( m_dict.contains( "hello" ) );
-		QList<QString> pronunciation_list = m_dict.getPronunciations( "hello" );
-		EXPECT_EQ( 2, pronunciation_list.size() );
-		EXPECT_EQ( "HH AH L OW", pronunciation_list.value( 0 ) );
-		EXPECT_EQ( "HH EH L OW", pronunciation_list.value( 1 ) );
-
-		EXPECT_TRUE( m_dict.contains( "there" ) );
-		pronunciation_list = m_dict.getPronunciations( "there" );
-		EXPECT_EQ( 1, pronunciation_list.size() );
-		EXPECT_EQ( "DH EH R", pronunciation_list.value( 0 ) );
-
-		EXPECT_FALSE( m_dict.contains( "goodbye" ) );
-	}
-
-	void testLowercase() {
-		EXPECT_TRUE( m_dict.loadDictionary( PRONOUCE_DICT_LOWERCASE ) );
-
-		EXPECT_TRUE( m_dict.contains( "hello" ) );
-		QList<QString> pronunciation_list = m_dict.getPronunciations( "hello" );
-		EXPECT_EQ( 2, pronunciation_list.size() );
-		EXPECT_EQ( "HH AH L OW", pronunciation_list.value( 0 ) );
-		EXPECT_EQ( "HH EH L OW", pronunciation_list.value( 1 ) );
-
-		EXPECT_TRUE( m_dict.contains( "there" ) );
-		pronunciation_list = m_dict.getPronunciations( "there" );
-		EXPECT_EQ( 1, pronunciation_list.size() );
-		EXPECT_EQ( "DH EH R", pronunciation_list.value( 0 ) );
-
-		EXPECT_FALSE( m_dict.contains( "goodbye" ) );
-	}
-
-	void testHtk() {
-		EXPECT_TRUE( m_dict.loadDictionary( PRONOUCE_DICT_HTK ) );
-
-		EXPECT_TRUE( m_dict.contains( "abandon" ) );
-		QList<QString> pronunciation_list = m_dict.getPronunciations( "abandon" );
-		EXPECT_EQ( 1, pronunciation_list.size() );
-		EXPECT_EQ( "ax b ae n d ax n", pronunciation_list.value( 0 ) );
-
-		EXPECT_TRUE( m_dict.contains( "abandoned" ) );
-		pronunciation_list = m_dict.getPronunciations( "abandoned" );
-		EXPECT_EQ( 1, pronunciation_list.size() );
-		EXPECT_EQ( "ax b ae n d ax n d", pronunciation_list.value( 0 ) );
-
-		EXPECT_TRUE( m_dict.contains( "abandonment" ) );
-		pronunciation_list = m_dict.getPronunciations( "abandonment" );
-		EXPECT_EQ( 1, pronunciation_list.size() );
-		EXPECT_EQ( "ax b ae n d ax n m ax n t", pronunciation_list.value( 0 ) );
-
-		EXPECT_FALSE( m_dict.contains( "zoom" ) );
-		pronunciation_list = m_dict.getPronunciations( "zoom" );
-		EXPECT_EQ( 0, pronunciation_list.size() );
-	}
-
 	PronounceDict m_dict;
 };
 
 TEST_F(TestPronounceDict, HashesInDictionary) {
-	testHashes();
+	EXPECT_TRUE( m_dict.loadDictionary( PRONOUCE_DICT_HASHES ) );
+
+	EXPECT_TRUE( m_dict.contains( "hello" ) );
+	QList<QString> pronunciation_list = m_dict.getPronunciations( "hello" );
+	EXPECT_EQ( 1, pronunciation_list.size() );
+	EXPECT_EQ( "hh ax l ow", pronunciation_list.value( 0 ) );
+
+	EXPECT_TRUE( m_dict.contains( "there" ) );
+	pronunciation_list = m_dict.getPronunciations( "there" );
+	EXPECT_EQ( 2, pronunciation_list.size() );
+	EXPECT_EQ( "dh ea", pronunciation_list.value( 0 ) );
+	EXPECT_EQ( "dh ea r", pronunciation_list.value( 1 ) );
+
+	EXPECT_FALSE( m_dict.contains( "goodbye" ) );
 }
 
 TEST_F(TestPronounceDict, SemicolonsInDictionary) {
-	testSemicolons();
+	EXPECT_TRUE( m_dict.loadDictionary( PRONOUCE_DICT_SEMICOLON ) );
+
+	EXPECT_TRUE( m_dict.contains( "hello" ) );
+	QList<QString> pronunciation_list = m_dict.getPronunciations( "hello" );
+	EXPECT_EQ( 2, pronunciation_list.size() );
+	EXPECT_EQ( "HH AH L OW", pronunciation_list.value( 0 ) );
+	EXPECT_EQ( "HH EH L OW", pronunciation_list.value( 1 ) );
+
+	EXPECT_TRUE( m_dict.contains( "there" ) );
+	pronunciation_list = m_dict.getPronunciations( "there" );
+	EXPECT_EQ( 1, pronunciation_list.size() );
+	EXPECT_EQ( "DH EH R", pronunciation_list.value( 0 ) );
+
+	EXPECT_FALSE( m_dict.contains( "goodbye" ) );
 }
 
 TEST_F(TestPronounceDict, LowercaseInDictionary ) {
-	testLowercase();
+	EXPECT_TRUE( m_dict.loadDictionary( PRONOUCE_DICT_LOWERCASE ) );
+
+	EXPECT_TRUE( m_dict.contains( "hello" ) );
+	QList<QString> pronunciation_list = m_dict.getPronunciations( "hello" );
+	EXPECT_EQ( 2, pronunciation_list.size() );
+	EXPECT_EQ( "HH AH L OW", pronunciation_list.value( 0 ) );
+	EXPECT_EQ( "HH EH L OW", pronunciation_list.value( 1 ) );
+
+	EXPECT_TRUE( m_dict.contains( "there" ) );
+	pronunciation_list = m_dict.getPronunciations( "there" );
+	EXPECT_EQ( 1, pronunciation_list.size() );
+	EXPECT_EQ( "DH EH R", pronunciation_list.value( 0 ) );
+
+	EXPECT_FALSE( m_dict.contains( "goodbye" ) );
 }
 
 TEST_F(TestPronounceDict, HtkDictionaryFormat ) {
-	testHtk();
+	EXPECT_TRUE( m_dict.loadDictionary( PRONOUCE_DICT_HTK ) );
+
+	EXPECT_TRUE( m_dict.contains( "abandon" ) );
+	QList<QString> pronunciation_list = m_dict.getPronunciations( "abandon" );
+	EXPECT_EQ( 1, pronunciation_list.size() );
+	EXPECT_EQ( "ax b ae n d ax n", pronunciation_list.value( 0 ) );
+
+	EXPECT_TRUE( m_dict.contains( "abandoned" ) );
+	pronunciation_list = m_dict.getPronunciations( "abandoned" );
+	EXPECT_EQ( 1, pronunciation_list.size() );
+	EXPECT_EQ( "ax b ae n d ax n d", pronunciation_list.value( 0 ) );
+
+	EXPECT_TRUE( m_dict.contains( "abandonment" ) );
+	pronunciation_list = m_dict.getPronunciations( "abandonment" );
+	EXPECT_EQ( 1, pronunciation_list.size() );
+	EXPECT_EQ( "ax b ae n d ax n m ax n t", pronunciation_list.value( 0 ) );
+
+	EXPECT_FALSE( m_dict.contains( "zoom" ) );
+	pronunciation_list = m_dict.getPronunciations( "zoom" );
+	EXPECT_EQ( 0, pronunciation_list.size() );
 }
 
 } // namespace
