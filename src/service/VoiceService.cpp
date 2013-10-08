@@ -52,8 +52,7 @@ VoiceService::VoiceService(const QDBusConnection &connection,
 		throw logic_error("Unable to initialize Sphinx decoder");
 	}
 
-	if( !m_dict.loadDictionary( DICT_PATH ) )
-	{
+	if (!m_dict.loadDictionary(DICT_PATH)) {
 		throw logic_error("Unable to initialize pronunciations dictionary");
 	}
 
@@ -64,7 +63,7 @@ VoiceService::~VoiceService() {
 	m_connection.unregisterObject("/com/canonical/unity/Voice");
 
 	if (ps) {
-		ps_free(ps);
+		ps_free (ps);
 	}
 }
 
@@ -78,17 +77,18 @@ QString VoiceService::utteranceLoop() {
 
 	if ((ad = ad_open_dev(cmd_ln_str_r(config, "-adcdev"),
 			(int) cmd_ln_float32_r(config, "-samprate"))) == NULL) {
-    sendErrorReply( QDBusError::Failed, "Failed to open audio device" );
+		sendErrorReply(QDBusError::Failed, "Failed to open audio device");
 		return QString();
 	}
 
 	// Initialize continuous listening module
 	if ((cont = cont_ad_init(ad, ad_read)) == NULL) {
-    sendErrorReply( QDBusError::Failed, "Failed to initialize voice activity detection" );
+		sendErrorReply(QDBusError::Failed,
+				"Failed to initialize voice activity detection");
 		return QString();
 	}
 	if (ad_start_rec(ad) < 0) {
-    sendErrorReply( QDBusError::Failed, "Failed to start recording" );
+		sendErrorReply(QDBusError::Failed, "Failed to start recording");
 		return QString();
 	}
 
@@ -98,21 +98,21 @@ QString VoiceService::utteranceLoop() {
 
 	int attempts = 0;
 	/* Wait data for next utterance */
-	while ((k = cont_ad_read (cont, adbuf, 4096)) == 0) {
+	while ((k = cont_ad_read(cont, adbuf, 4096)) == 0) {
 		++attempts;
-		if(attempts == 100) {
+		if (attempts == 100) {
 			break;
 		}
-		QThread::msleep (100);
+		QThread::msleep(100);
 	}
 
 	if (k == 0) {
-    sendErrorReply( QDBusError::Failed, "Nothing was heard" );
+		sendErrorReply(QDBusError::Failed, "Nothing was heard");
 		return QString();
 	}
 
 	if (k < 0) {
-    sendErrorReply( QDBusError::Failed, "Failed to read audio" );
+		sendErrorReply(QDBusError::Failed, "Failed to read audio");
 		return QString();
 	}
 
@@ -120,8 +120,8 @@ QString VoiceService::utteranceLoop() {
 	 * Non-zero amount of data received; start recognition of new utterance.
 	 * NULL argument to uttproc_begin_utt => automatic generation of utterance-id.
 	 */
-	if (ps_start_utt(ps, NULL) < 0){
-    sendErrorReply( QDBusError::Failed, "Failed to start utterance" );
+	if (ps_start_utt(ps, NULL) < 0) {
+		sendErrorReply(QDBusError::Failed, "Failed to start utterance");
 		return QString();
 	}
 
@@ -136,8 +136,8 @@ QString VoiceService::utteranceLoop() {
 	/* Decode utterance until end (marked by a "long" silence, >1sec) */
 	for (;;) {
 		/* Read non-silence audio data, if any, from continuous listening module */
-		if ((k = cont_ad_read(cont, adbuf, 4096)) < 0){
-      sendErrorReply( QDBusError::Failed, "Failed to read audio" );
+		if ((k = cont_ad_read(cont, adbuf, 4096)) < 0) {
+			sendErrorReply(QDBusError::Failed, "Failed to read audio");
 			return QString();
 		}
 		if (k == 0) {
@@ -153,7 +153,7 @@ QString VoiceService::utteranceLoop() {
 
 			/* Check for timeout */
 			if ((cont->read_ts - ts) > DEFAULT_SAMPLES_PER_SEC * 30) {
-        sendErrorReply( QDBusError::Failed, "Nothing was heard" );
+				sendErrorReply(QDBusError::Failed, "Nothing was heard");
 				return QString();
 			}
 		}
@@ -178,9 +178,9 @@ QString VoiceService::utteranceLoop() {
 	cont_ad_reset(cont);
 
 	qDebug() << "Voice query has stopped listening, processing...";
-	fflush(stdout);
+	fflush (stdout);
 	/* Finish decoding, obtain and print result */
-	ps_end_utt(ps);
+	ps_end_utt (ps);
 	hyp = ps_get_hyp(ps, NULL, &uttid);
 	fflush(stdout);
 
@@ -211,7 +211,7 @@ QString VoiceService::sphinxListen(fsg_model_t* fsg) {
 	fsg_set_add(fsgs, fsg_model_name(fsg), fsg);
 	fsg_set_select(fsgs, fsg_model_name(fsg));
 
-	ps_update_fsgset(ps);
+	ps_update_fsgset (ps);
 
 	return utteranceLoop();
 }
@@ -235,8 +235,7 @@ int VoiceService::writeCommand(fsg_model_t *fsg, const QStringList &command,
 		const QString &word = command.first();
 		QString lower = word.toLower();
 
-		if( m_dict.contains( lower ) )
-		{
+		if (m_dict.contains(lower)) {
 			int wid = fsg_model_word_add(fsg, lower.toUtf8().data());
 			fsg_model_trans_add(fsg, 0, stateNum + 1, commandProbability, wid);
 		}
@@ -250,8 +249,7 @@ int VoiceService::writeCommand(fsg_model_t *fsg, const QStringList &command,
 	for (; word != command.constEnd(); ++word) {
 		QString lower = word->toLower();
 
-		if( m_dict.contains( lower ) )
-		{
+		if (m_dict.contains(lower)) {
 			int wid = fsg_model_word_add(fsg, lower.toUtf8().data());
 			fsg_model_trans_add(fsg, stateNum, stateNum + 1, 1.0, wid);
 		}
@@ -273,8 +271,9 @@ fsg_model_t* VoiceService::buildGrammar(const QList<QStringList> &commands) {
 	fsg_model_t *fsg = fsg_model_init("<unity-voice.GRAM>", ps_get_logmath(ps),
 			cmd_ln_float32_r(config, "-lw"), numberOfStates);
 
-	if( fsg == NULL ){
-    sendErrorReply( QDBusError::Failed, "Could not build Sphinx grammar. Is sphinx-voxforge installed?" );
+	if (fsg == NULL) {
+		sendErrorReply(QDBusError::Failed,
+				"Could not build Sphinx grammar. Is sphinx-voxforge installed?");
 		return NULL;
 	}
 
@@ -302,7 +301,7 @@ QString VoiceService::listen(const QList<QStringList> &commands) {
 	m_adaptor->Loading();
 	fsg_model_t *fsg = buildGrammar(commands);
 
-	if( fsg == NULL ){
+	if (fsg == NULL) {
 		return QString();
 	}
 
