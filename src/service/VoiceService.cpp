@@ -63,7 +63,7 @@ VoiceService::~VoiceService() {
 	m_connection.unregisterObject("/com/canonical/unity/Voice");
 
 	if (ps) {
-		ps_free (ps);
+		ps_free(ps);
 	}
 }
 
@@ -178,9 +178,9 @@ QString VoiceService::utteranceLoop() {
 	cont_ad_reset(cont);
 
 	qDebug() << "Voice query has stopped listening, processing...";
-	fflush (stdout);
+	fflush(stdout);
 	/* Finish decoding, obtain and print result */
-	ps_end_utt (ps);
+	ps_end_utt(ps);
 	hyp = ps_get_hyp(ps, NULL, &uttid);
 	fflush(stdout);
 
@@ -211,7 +211,7 @@ QString VoiceService::sphinxListen(fsg_model_t* fsg) {
 	fsg_set_add(fsgs, fsg_model_name(fsg), fsg);
 	fsg_set_select(fsgs, fsg_model_name(fsg));
 
-	ps_update_fsgset (ps);
+	ps_update_fsgset(ps);
 
 	return utteranceLoop();
 }

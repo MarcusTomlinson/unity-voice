@@ -22,16 +22,17 @@
 #include <QHash>
 #include <QString>
 
-class Q_DECL_EXPORT PronounceDict final {
-public:
-	bool loadDictionary(const QString& dictPath );
+class Q_DECL_EXPORT PronounceDict
+final {
+	public:
+		bool loadDictionary(const QString& dictPath);
 
-	bool contains( const QString& word );
+		bool contains(const QString& word);
 
-	QList<QString> getPronunciations( const QString& word );
+		QList<QString> getPronunciations(const QString& word);
 
-private:
-	QHash< QString, QList<QString> > m_dict;
-};
+	private:
+		QHash<QString, QList<QString> > m_dict;
+	};
 
 #endif /* PRONOUNCEDICT_H_ */

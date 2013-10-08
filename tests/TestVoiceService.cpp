@@ -38,7 +38,7 @@ class TestVoiceService: public Test {
 protected:
 	TestVoiceService() :
 			mainloop(0), api(0), context(0), operation_success(false), module_index(
-					PA_INVALID_INDEX) {
+					PA_INVALID_INDEX ) {
 
 		{
 			QTemporaryFile temporaryFile(
@@ -95,7 +95,7 @@ protected:
 	}
 
 	void indexCallback(pa_context *c, uint32_t idx) {
-		if (idx == PA_INVALID_INDEX) {
+		if (idx == PA_INVALID_INDEX ) {
 			qWarning() << "Pulse error: " << pa_strerror(pa_context_errno(c));
 			FAIL();
 		}
@@ -188,7 +188,7 @@ protected:
 	}
 
 	void unloadPipeModule() {
-		if (module_index == PA_INVALID_INDEX) {
+		if (module_index == PA_INVALID_INDEX ) {
 			return;
 		}
 
@@ -278,7 +278,7 @@ protected:
 		QSignalSpy heardSomethingSpy(voice.data(), SIGNAL(HeardSomething()));
 
 		// Start listening
-		QDBusPendingReply < QString > reply(voice->listen(commands));
+		QDBusPendingReply<QString> reply(voice->listen(commands));
 
 		// Waiting until the service is listening
 		listeningSpy.wait();

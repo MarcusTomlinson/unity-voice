@@ -65,8 +65,7 @@ bool PronounceDict::loadDictionary(const QString& dictPath) {
 		// if we're on a duplicate word line, skip to after ')'
 		else if (line[word_end_pos] == '(') {
 			pronounce_start_pos = line.indexOf(')', word_end_pos) + 1;
-		}
-		else {
+		} else {
 			pronounce_start_pos = word_end_pos;
 		}
 
@@ -87,7 +86,7 @@ bool PronounceDict::loadDictionary(const QString& dictPath) {
 		}
 
 		//-- insert pronunciation into dictionary
-		QList < QString > pronunciation_list;
+		QList<QString> pronunciation_list;
 
 		if (m_dict.contains(word)) {
 			pronunciation_list = m_dict.value(word);
