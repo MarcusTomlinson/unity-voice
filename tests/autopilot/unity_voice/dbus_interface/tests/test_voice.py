@@ -6,7 +6,7 @@
 # by the Free Software Foundation.
 
 from autopilot.testcase import AutopilotTestCase
-from os.path import abspath, dirname, join
+from os.path import abspath, dirname, join, isdir
 from autopilot.matchers import Eventually
 from testtools.matchers import Equals
 import dbus
@@ -15,6 +15,7 @@ import dbus.mainloop.glib
 import gobject
 import glob
 import subprocess
+import sys
 
 from unity_voice import DBusTestCase
 
@@ -52,8 +53,13 @@ class DBusInterfaceTests(AutopilotTestCase, DBusTestCase):
 
         self.result = ""
         self.sound_file = ""
-        
+
+        # First try the in-source path
         self.sound_dir = abspath(join(dirname(__file__), '..', '..', '..', '..', 'data', 'sounds'))
+
+        # Now try the install path
+        if not isdir(self.sound_dir):
+            self.sound_dir = join(dirname(sys.modules['unity_voice'].__file__), 'sounds')
 
     def application_binary(self):
         cmds = glob.glob('/usr/lib/*/unity-voice-service')

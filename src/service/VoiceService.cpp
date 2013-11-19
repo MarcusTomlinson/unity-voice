@@ -29,18 +29,16 @@ arg_t VoiceService::sphinx_cmd_ln[] = { POCKETSPHINX_OPTIONS, { "-adcdev",
 		CMDLN_EMPTY_OPTION };
 
 VoiceService::VoiceService(const QDBusConnection &connection,
-		const QString &deviceName, QObject *parent) :
+		const char *deviceName, QObject *parent) :
 		QObject(parent), m_adaptor(new VoiceAdaptor(this)), m_connection(
 				connection) {
 
-	QString name = deviceName;
-
-	if (!deviceName.isEmpty()) {
-		config = cmd_ln_init(0, sphinx_cmd_ln, TRUE, "-hmm", HMM_PATH, "-dict",
-				DICT_PATH, "-adcdev", name.toUtf8().data(), 0);
+	if (deviceName != nullptr) {
+		config = cmd_ln_init(nullptr, sphinx_cmd_ln, TRUE, "-hmm", HMM_PATH, "-dict",
+				DICT_PATH, "-adcdev", deviceName, nullptr);
 	} else {
-		config = cmd_ln_init(0, sphinx_cmd_ln, TRUE, "-hmm", HMM_PATH, "-dict",
-				DICT_PATH, 0);
+		config = cmd_ln_init(nullptr, sphinx_cmd_ln, TRUE, "-hmm", HMM_PATH, "-dict",
+				DICT_PATH, nullptr);
 	}
 
 	if (config == NULL) {

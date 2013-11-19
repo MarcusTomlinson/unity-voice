@@ -37,7 +37,7 @@ class VoiceService: public QObject, protected QDBusContext {
 Q_OBJECT
 public:
 	explicit VoiceService(const QDBusConnection &connection,
-			const QString &deviceName, QObject *parent = 0);
+			const char *deviceName, QObject *parent = 0);
 
 	virtual ~VoiceService();
 

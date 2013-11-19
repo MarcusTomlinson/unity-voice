@@ -16,7 +16,7 @@
  * Author: Marcus Tomlinson <marcus.tomlinson@canonical.com>
  */
 
-#include <libunityvoice/PronounceDict.h>
+#include <service/PronounceDict.h>
 
 #include <gtest/gtest.h>
 #include <iostream>
