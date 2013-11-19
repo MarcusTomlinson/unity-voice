@@ -19,7 +19,7 @@
 #ifndef VOICESERVICE_H_
 #define VOICESERVICE_H_
 
-#include <libunityvoice/PronounceDict.h>
+#include <service/PronounceDict.h>
 
 #include <QList>
 #include <QString>

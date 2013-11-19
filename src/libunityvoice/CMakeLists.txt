@@ -6,8 +6,7 @@ set(
 )
 
 set(
-        LIB_UNITY_VOICE_SOURCES
-        PronounceDict.cpp
+	LIB_UNITY_VOICE_SOURCES
 	UnityVoice.cpp
 )
 

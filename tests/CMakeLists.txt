@@ -19,7 +19,7 @@ add_definitions(-DPRONOUCE_DICT_HTK="${CMAKE_CURRENT_SOURCE_DIR}/data/test-prono
 
 set(
 	UNIT_TESTS_SRC
-        TestPronounceDict.cpp
+	TestPronounceDict.cpp
 	TestVoiceService.cpp
 	main.cpp
 )
@@ -39,6 +39,7 @@ qt5_use_modules(
 target_link_libraries(
 	unit-tests
 	unityvoice
+	unity-voice-service
 	${POCKETSPHINX_LIBRARIES}
 	${QTDBUSTEST_LIBRARIES}
 	${GTEST_LIBRARIES}
