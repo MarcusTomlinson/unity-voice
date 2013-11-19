@@ -44,9 +44,9 @@ int main(int argc, char *argv[]) {
 	QDBusConnection connection = QDBusConnection::sessionBus();
 	connection.registerService("com.canonical.Unity.Voice");
 
-	QString deviceName("");
+	char *deviceName = nullptr;
 	if (argc == 2) {
-		deviceName = QString::fromUtf8(argv[1]);
+		deviceName = argv[1];
 	}
 
 	VoiceService voiceService(QDBusConnection::sessionBus(), deviceName);

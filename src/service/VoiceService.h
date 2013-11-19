@@ -19,7 +19,7 @@
 #ifndef VOICESERVICE_H_
 #define VOICESERVICE_H_
 
-#include <libunityvoice/PronounceDict.h>
+#include <service/PronounceDict.h>
 
 #include <QList>
 #include <QString>
@@ -37,7 +37,7 @@ class VoiceService: public QObject, protected QDBusContext {
 Q_OBJECT
 public:
 	explicit VoiceService(const QDBusConnection &connection,
-			const QString &deviceName, QObject *parent = 0);
+			const char *deviceName, QObject *parent = 0);
 
 	virtual ~VoiceService();
 
