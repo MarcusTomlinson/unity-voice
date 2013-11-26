@@ -1,5 +1,32 @@
-unity-voice (0.1-0ubuntu1) UNRELEASED; urgency=low
+unity-voice (0.1+14.04.20131126-0ubuntu1) trusty; urgency=low
 
+  [ Pete Woods ]
   * Initial release.
+  * Basic port with tests in C++
+  * Clean up
+  * Add client library
+  * Use client library in tests
+  * Rename the test
+  * Fix leaks
+  * Trim unnecessary dependencies
+  * The tests should be solid now (waits for listening signal)
+  * Fix the copyright status
+  * Rename upstart configuration
+  * Include from common, instead of libunityvoice
+  * Rename method
+  * Fix debian symbols file
+  * Add autopilot tests
+  * Refer to the command by its absolute path
+  * Add autopilot package
+  * Fix binary path in run script
+  * Fix run on device script
+  * Introduced a dictionary hash table to store known words for command
+    validation Improved error handling to return more detailed messages
+    about failures.
+  * Fix autopilot tests when service is installed, rather than just from
+    source directory
 
- -- Pete Woods <pete.woods@canonical.com>  Wed, 14 Aug 2013 12:08:06 -0400
+  [ Ubuntu daily release ]
+  * Automatic snapshot from revision 20
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Tue, 26 Nov 2013 20:54:17 +0000
