@@ -18,9 +18,10 @@ Build-Depends: cmake,
                valgrind,
 Standards-Version: 3.9.4
 Homepage: https://launchpad.net/unity-voice
-# If you aren't a member of ~unity-team but need to upload packaging changes,
-# just go ahead. ~unity-team will notice and sync up the code again.
-Vcs-Bzr: https://code.launchpad.net/~unity-team/unity-voice/trunk
+# if you don't have have commit access to this branch but would like to upload
+# directly to Ubuntu, don't worry: your changes will be merged back into the
+# upstream branch
+Vcs-Bzr: lp:unity-voice
 
 Package: libunityvoice1-dev
 Section: libdevel
@@ -62,4 +63,3 @@ Depends: unity-voice-service (>= ${binary:Version}),
 Description: Voice recognition autopilot tests
  This package contains all the autopilot integration tests for testing the
  unity-voice functionality.
-
