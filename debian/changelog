@@ -1,3 +1,19 @@
+unity-voice (0.1+14.04.20131202.1-0ubuntu1) trusty; urgency=low
+
+  [ Pete Woods ]
+  * Add missing dependency to dev package".
+
+  [ Robert Bruce Park ]
+  * Minor packaging fixups.
+
+  [ Łukasz 'sil2100' Zemczak ]
+  * Fix copyright issues.
+
+  [ Ubuntu daily release ]
+  * Automatic snapshot from revision 24
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Mon, 02 Dec 2013 13:12:22 +0000
+
 unity-voice (0.1+14.04.20131126-0ubuntu1) trusty; urgency=low
 
   [ Pete Woods ]
