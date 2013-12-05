@@ -20,9 +20,12 @@ add_definitions(-DPRONOUCE_DICT_HTK="${CMAKE_CURRENT_SOURCE_DIR}/data/test-prono
 set(
 	UNIT_TESTS_SRC
 	TestPronounceDict.cpp
-	TestVoiceService.cpp
 	main.cpp
 )
+
+if(${ENABLE_VOICE_TESTS})
+	list(APPEND UNIT_TESTS_SRC TestVoiceService.cpp)
+endif()
 
 add_executable(
 	unit-tests

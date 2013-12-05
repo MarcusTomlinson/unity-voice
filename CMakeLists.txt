@@ -11,7 +11,7 @@ set(DICT_PATH "/usr/share/sphinx-voxforge-en/lm/voxforge_en_sphinx.cd_cont_3000/
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" "${CMAKE_MODULE_PATH}")
 
-option(ENABLE_TESTS "Determine if tests will be run" ON)
+option(ENABLE_VOICE_TESTS "Determine if voice tests will be run" OFF)
 
 find_package(PkgConfig REQUIRED)
 
@@ -72,13 +72,11 @@ configure_file(
 add_subdirectory("src")
 add_subdirectory("data")
 
-if(${ENABLE_TESTS})
-	enable_testing()
-	ADD_CUSTOM_TARGET(
-		check
-		${CMAKE_CTEST_COMMAND} --force-new-ctest-process --output-on-failure
-	)
-endif()
+enable_testing()
+ADD_CUSTOM_TARGET(
+	check
+	${CMAKE_CTEST_COMMAND} --force-new-ctest-process --output-on-failure
+)
 
 add_subdirectory(tests)
 
