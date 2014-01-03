@@ -15,7 +15,7 @@ Build-Depends: cmake,
                qtbase5-dev,
                sphinx-voxforge-hmm-en,
                sphinx-voxforge-lm-en,
-               valgrind,
+               valgrind [!arm64 !ppc64el],
 Standards-Version: 3.9.4
 Homepage: https://launchpad.net/unity-voice
 # if you don't have have commit access to this branch but would like to upload
