@@ -1,3 +1,14 @@
+unity-voice (0.1+14.04.20140108.1-0ubuntu1) trusty; urgency=low
+
+  [ Pete Woods ]
+  * Enable unit tests during debian package build.
+  * Valgrind is not available on all platforms.
+
+  [ Ubuntu daily release ]
+  * Automatic snapshot from revision 27
+
+ -- Ubuntu daily release <ps-jenkins@lists.canonical.com>  Wed, 08 Jan 2014 18:22:38 +0000
+
 unity-voice (0.1+14.04.20131202.1-0ubuntu1) trusty; urgency=low
 
   [ Pete Woods ]
