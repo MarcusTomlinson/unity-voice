@@ -1,3 +1,13 @@
+unity-voice (0.1+15.04.20150416-0ubuntu1) vivid; urgency=medium
+
+  [ CI Train Bot ]
+  * debian/libunityvoice1.symbols: update to released version.
+
+  [ Iain Lane ]
+  * Add ComCanonicalUnityVoiceInterface::listen to symbols file
+
+ -- CI Train Bot <ci-train-bot@canonical.com>  Thu, 16 Apr 2015 15:39:18 +0000
+
 unity-voice (0.1+14.04.20140304-0ubuntu1) trusty; urgency=low
 
   [ Pete Woods ]

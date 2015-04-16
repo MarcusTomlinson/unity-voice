@@ -1,7 +1,7 @@
 libunityvoice.so.1 libunityvoice1 #MINVER#
  (c++)"LibUnityVoice::UnityVoice::getInstance()@Base" 0.1
  (c++)"LibUnityVoice::UnityVoice::registerMetaTypes()@Base" 0.1
- (c++)"ComCanonicalUnityVoiceInterface::listen(QList<QStringList> const&)::{lambda()#1}::operator()() const::qstring_literal@Base" 0replaceme
+ (c++)"ComCanonicalUnityVoiceInterface::listen(QList<QStringList> const&)::{lambda()#1}::operator()() const::qstring_literal@Base" 0.1+15.04.20150416
  (c++)"ComCanonicalUnityVoiceInterface::qt_metacall(QMetaObject::Call, int, void**)@Base" 0.1
  (c++)"ComCanonicalUnityVoiceInterface::qt_metacast(char const*)@Base" 0.1
  (c++)"ComCanonicalUnityVoiceInterface::HeardSomething()@Base" 0.1
