@@ -1,3 +1,12 @@
+unity-voice (0.1+15.10.20151005-0ubuntu1) wily; urgency=medium
+
+  [ Łukasz 'sil2100' Zemczak ]
+  * Disable valgrind memcheck during testing as it's causing a test
+    failure on amd64 (due to valgrind being angry at Qt internals).
+    Remove the valgrind build-dependency. (LP: #1502907)
+
+ -- Łukasz Zemczak <ci-train-bot@canonical.com>  Mon, 05 Oct 2015 14:50:40 +0000
+
 unity-voice (0.1+15.04.20150416-0ubuntu1) vivid; urgency=medium
 
   [ CI Train Bot ]
