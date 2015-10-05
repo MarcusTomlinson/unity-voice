@@ -6,9 +6,5 @@ export DPKG_GENSYMBOLS_CHECK_LEVEL=4
 %:
 	dh $@ --parallel --fail-missing
 
-override_dh_auto_configure:
-	# In case valgrind is installed - disable the memcheck option
-	dh_auto_configure -- -DENABLE_MEMCHECK_OPTION=OFF
-
 override_dh_makeshlibs:
 	dh_makeshlibs -V
